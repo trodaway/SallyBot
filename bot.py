@@ -231,13 +231,14 @@ async def on_message(message):
             msg = message.content.split(" ")
             if any(x in translations.keys() for x in msg):
                 with channel.typing():
-                    new_msg = []
+                    new_words = []
                     for word in msg:
                         if word == translations.keys():
                             new_word = translations[word]
-                            new_msg.append(new_word)
+                            new_words.append(new_word)
                         else:
-                            new_msg.append(word)
+                            new_words.append(word)
+                    new_msg = " ".join(new_words)
                     await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, new_msg)}")
             else:
                 return
