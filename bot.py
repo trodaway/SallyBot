@@ -192,7 +192,7 @@ async def on_message(message):
             await message.add_reaction(emoji="<:Sally:689616621576257557>")
 
     # responds to Leo's Roars
-    elif message.author.id == "689751502700675072" and match("^Ro+a+r$", message) is not None:
+    elif message.author.id == "689751502700675072" and match("^Ro+a+r$", message.content) is not None:
         with channel.typing():
             choice = random.choice(range(3))
             if choice == 0:
@@ -228,7 +228,7 @@ async def on_message(message):
     else:
         with open("data/geordie.json", "r") as f:
             translations = load(f)
-            msg = message.contnet.split(" ")
+            msg = message.content.split(" ")
             if any(x in translations.keys() for x in msg):
                 with channel.typing():
                     new_msg = []
