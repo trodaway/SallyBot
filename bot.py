@@ -183,7 +183,7 @@ async def on_message(message):
     print(f"Author ID: {message.author.id}")
 
     # stops it replying to itself
-    if message.author == discord.Client.user or message == "":
+    if message.author.id == "693216082567233667" or message == "":
         return
 
     # reacts to all of Leo's messages
