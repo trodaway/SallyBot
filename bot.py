@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 from re import match
 import giphy_client
 from giphy_client.rest import ApiException
-from PIL import Image
-from io import BytesIO
 import requests
 import instaloader
 
@@ -161,7 +159,8 @@ async def sally(ctx, arg: str):
             post = next(posts)
             if not os.path.isdir("temp"):
                 os.mkdir("temp")
-            Image.open(BytesIO(requests.get(post.url).content)).save("temp/latest_insta.jpg")
+            with open("temp/latest_insta.jpg", "wb") as f:
+                f.write(requests.get(post.url).content)
             await ctx.send(file=discord.File("temp/latest_insta.jpg"))
         os.remove("temp/latest_insta.jpg")
 
