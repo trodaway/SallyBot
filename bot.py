@@ -10,7 +10,7 @@ from giphy_client.rest import ApiException
 import requests
 import instaloader
 
-os.chdir(os.path.dirname(__file__))
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
