@@ -20,9 +20,9 @@ INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 # USEFUL FUNCTIONS
 def case_correction(message, response):
-    if message.isupper():
+    if message.content.isupper():
         return response.upper()
-    elif message.islower():
+    elif message.content.islower():
         return response.lower()
     else:
         return response.title()
@@ -178,22 +178,25 @@ async def sally(ctx, arg: str):
 @bot.event
 async def on_message(message):
     channel = message.channel
+    print(f"Content: {message.content}")
+    print(f"Author: {message.author}")
+    print(f"Author ID: {message.author.id}")
 
     # stops it replying to itself
     if message.author == discord.Client.user or message == "":
         return
 
     # reacts to all of Leo's messages
-    elif message.author == "LeoBot":
+    elif message.author.id == "689751502700675072":
         with channel.typing():
             await message.add_reaction(emoji="<:Sally:689616621576257557>")
 
     # responds to Leo's Roars
-    elif message.author == "LeoBot" and match("^Ro+a+r$", message) is not None:
+    elif message.author.id == "689751502700675072" and match("^Ro+a+r$", message) is not None:
         with channel.typing():
             choice = random.choice(range(3))
             if choice == 0:
-                count = message.count("o")
+                count = message.cotent.count("o")
                 await channel.send(f"{'a' * count + 'r' * int(count/2) + 'g' * int(count/2) + 'h' * int(count/2)}")
             elif choice == 1:
                 await channel.send(gif_response("scream"))
@@ -202,22 +205,22 @@ async def on_message(message):
 
     # Geordie Translations
     # special case for "no"
-    elif (message.lower()) == "no":
+    elif (message.content.lower()) == "no":
         with channel.typing():
             await channel.send(case_correction(message, "nar"))
 
     # special case for "good"
-    elif (message.lower()) == "good":
+    elif (message.content.lower()) == "good":
         with channel.typing():
             await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, 'canny good like')}")
 
     # special case for "yes"
-    elif (message.lower()) == "yes":
+    elif (message.content.lower()) == "yes":
         with channel.typing():
             await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, 'whey aye man')}")
 
     # special case for "really good"
-    elif (message.lower()) == "really good":
+    elif (message.content.lower()) == "really good":
         with channel.typing():
             await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, 'purely belta')}")
 
@@ -225,7 +228,7 @@ async def on_message(message):
     else:
         with open("data/geordie.json", "r") as f:
             translations = load(f)
-            msg = message.split(" ")
+            msg = message.contnet.split(" ")
             if any(x in translations.keys() for x in msg):
                 with channel.typing():
                     new_msg = []
