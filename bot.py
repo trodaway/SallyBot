@@ -46,6 +46,11 @@ def gif_response(emotion):
 bot = commands.Bot(command_prefix="?")  # All commands will start with ?
 
 
+@bot.event
+async def on_ready():
+    print("I'm connected and ready to go!")
+
+
 @bot.command(name="sally")
 async def sally(ctx, arg: str):
     if arg == "help":
@@ -170,6 +175,7 @@ async def sally(ctx, arg: str):
             await ctx.send("I don't understand you! Type '!sally help' to learn what I can do")
 
 
+@bot.event
 async def on_message(message):
     channel = message.channel
 
@@ -232,9 +238,5 @@ async def on_message(message):
                     await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, new_msg)}")
             else:
                 return
-
-
-async def on_ready():
-    print("I'm connected and ready to go!")
     
 bot.run(TOKEN)
