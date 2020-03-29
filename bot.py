@@ -53,6 +53,8 @@ async def on_ready():
 
 @bot.command(name="sally")
 async def sally(ctx, arg: str):
+    print(f"ctx: {ctx}")
+    print(f"arg: {arg}")
     if arg == "help":
         with ctx.channel.typing():
             embed = discord.Embed(title="Sally the Seahorse Help", description="Available Commands:", colour=0x7413dc)
@@ -159,14 +161,15 @@ async def sally(ctx, arg: str):
             profile = instaloader.Profile.from_username(insta.context, "nussaggsallyandleo")
             posts = profile.get_posts()
             post = next(posts)
-            if not os.path.isdir("temp"):
-                os.mkdir("temp")
-            with open("temp/latest_insta.jpg", "wb") as f:
+            image_path = "latest_insta.jpg"
+            if os.path.exists(image_path):
+                os.remove(image_path)
+            with open(image_path, "wb") as f:
                 f.write(requests.get(post.url).content)
             await ctx.send("You can find mine and <@689751502700675072>'s Instagram [@nussaggsallyandleo]"
                            "(https://www.instagram.com/nussaggsallyandleo/")
-            await ctx.send("As a taster, here's our latest pic", file=discord.File("temp/latest_insta.jpg"))
-        os.remove("temp/latest_insta.jpg")
+            await ctx.send("As a taster, here's our latest pic", file=discord.File("latest_insta.jpg"))
+        os.remove(image_path)
 
     # if command doesn't exist
     else:
