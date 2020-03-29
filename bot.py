@@ -9,6 +9,7 @@ import giphy_client
 from giphy_client.rest import ApiException
 import requests
 import instaloader
+import string
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -244,23 +245,24 @@ async def on_message(message):
             with open("data/geordie.json", "r") as f:
                 translations = load(f)
                 msg = message.content.split(" ")
-                if any(x in translations.keys() for x in msg):
+                keys = [key.lower() for key in translations.keys()]
+                if any(x in keys for x in msg):
                     print(f"Trigger: We've a translation on our hands.. {msg}")
                     with channel.typing():
                         new_words = []
                         for word in msg:
                             print(f"Word: {word}")
-                            if word == translations.keys():
+                            if word in keys:
                                 print("Found a translation")
                                 new_word = translations[word]
-                                new_words.append(new_word)
+                                new_words.append(correct_case(word, new_word))
                             else:
                                 print("Not found a translation")
                                 new_words.append(word)
                             print(new_words)
                         new_msg = " ".join(new_words)
                         print(new_msg)
-                        await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, new_msg)}")
+                        await channel.send(f"In the Toon we'd say that like:\n>>> {new_msg}")
 
         await bot.process_commands(message)
     
