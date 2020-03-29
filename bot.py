@@ -121,6 +121,7 @@ async def sally(ctx, arg: str):
                     friends = line.split(",")
                     for friend in friends:
                         friend_list.append(friend)
+                print(friend_list)
                 if ctx.author.id in friend_list:
                     await ctx.send(f"{ctx.author.mention} you're already my friend!")
                 else:
