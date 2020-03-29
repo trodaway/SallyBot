@@ -54,49 +54,34 @@ async def on_ready():
     print("I'm connected and ready to go!")
 
 
-@bot.command(name="help")
-async def _help(ctx):
-    print(f"*****\nCommand: help\nCalled by: {ctx.author}")
-    embed = discord.Embed(title="Sally the Seahorse Help", description="Available Commands:", colour=0x7413dc)
-    embed.add_field(name="hi", value="Sally will say hi to you!")
-    embed.add_field(name="leo", value="Sally will talk about Leo the Lion")
-    embed.add_field(name="git", value="A link to the SallyBot git will be sent")
-    embed.add_field(name="rally", value="Sally will talk about Viking Rally")
-    embed.add_field(name="steal", value="Try and steal me!")
-    embed.add_field(name="fact", value="Get a random fact about me and my fellow Seahorses")
-    embed.add_field(name="credits", value="Learn more about how created me")
-    embed.add_field(name="instagram", value="Find out more about mine and Leo's Instagram")
-    await ctx.send(embed=embed)
-
-
-@bot.command(name="hi")
+@bot.command(name="hi", brief="I'll say hi", description="Say hi to me and I'll say hi back")
 async def hi(ctx):
     print(f"*****\nCommand: hi\nCalled by: {ctx.author}")
     await ctx.send(f'Hi {ctx.author.mention}!')
 
 
-@bot.command(name="leo")
+@bot.command(name="leo", brief="I'll talk about Leo", description="Leo is my best friend, let's talk about him!")
 async def leo(ctx):
     print(f"*****\nCommand: leo\nCalled by: {ctx.author}")
     await ctx.send("Leo is my Best Friend! We go on all our adventures together but he has to protect me, as other "
                    "SSAGO-ers like to steal me! :frowning:")
 
 
-@bot.command(name="git")
+@bot.command(name="git", brief="Link to my Git repo", description="Get a link to the magic code behind me")
 async def git(ctx):
     print(f"*****\nCommand: git\nCalled by: {ctx.author}")
     await ctx.send("Here's the git repo that contains all my inner code. I may look like the best teddy Seahorse you've"
                    " ever seen but there's a computer behind me!\nhttps://github.com/trodaway/SallyBot")
 
 
-@bot.command(name="rally")
+@bot.command(name="rally", brief="I'll talk about Viking Rally", description="Find out more about Viking Rally")
 async def rally(ctx):
     print(f"*****\nCommand: rally\nCalled by: {ctx.author}")
     await ctx.send("My friends from NUSSAGG and DUSAGG are hosting Viking Rally in November 2021! Please come join us "
                    "for a weekend of great fun in the Toon and surrounding areas. Its a canny place to be!")
 
 
-@bot.command(name="credits")
+@bot.command(name="credits", brief="My credits", description="Find out who makes me work (or not work!)")
 async def _credits(ctx):
     print(f"*****\nCommand: credits\nCalled by: {ctx.author}")
     try:
@@ -109,7 +94,7 @@ async def _credits(ctx):
                        "currently a little fuzzy as to who made me.")
 
 
-@bot.command(name="fact")
+@bot.command(name="fact", brief="Get a seahorse fact", description="I'll provide one of my many facts about seahorses")
 async def fact(ctx):
     print(f"*****\nCommand: fact\nCalled by: {ctx.author}")
     try:
@@ -121,7 +106,7 @@ async def fact(ctx):
         await ctx.send("I don't seem to know any facts at the minute :tired_face:. Please try again later!")
 
 
-@bot.command(name="can I be your friend?")
+@bot.command(name="can I be your friend?", breif="Befriend me", description="Ask about being my friend")
 async def friend(ctx):
     print(f"*****\nCommand: can I be your friend?\nCalled by: {ctx.author}")
     try:
@@ -142,7 +127,7 @@ async def friend(ctx):
         await ctx.send(f"My memory's a little fuzzy right now. Please try asking me again later!")
 
 
-@bot.command(name="steal")
+@bot.command(name="steal", brief="Try and steal me", description="You can try and steal me, but will you succeed?")
 async def steal(ctx):
     print(f"*****\nCommand: steal\nCalled by: {ctx.author}")
     try:
@@ -168,7 +153,7 @@ async def steal(ctx):
         await ctx.send("Better luck next time, I swam away")
 
 
-@bot.command(name="instagram")
+@bot.command(name="instagram", brief="Link to my Instagram", description="Get a link to mine and Leo's Instagram")
 async def instagram(ctx):
     print(f"*****\nCommand: instagram\nCalled by: {ctx.author}")
     with ctx.channel.typing():
