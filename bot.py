@@ -190,12 +190,12 @@ async def on_message(message):
         await bot.process_commands(message)
 
     # reacts to all of Leo's messages
-    elif message.author.id == "689751502700675072":
+    elif message.author.id == 689751502700675072:
         with channel.typing():
             await message.add_reaction(emoji="<:Sally:689616621576257557>")
 
     # responds to Leo's Roars
-    elif message.author.id == "689751502700675072" and match("^Ro+a+r$", message.content) is not None:
+    elif message.author.id == 689751502700675072 and match("^Ro+a+r$", message.content) is not None:
         with channel.typing():
             choice = random.choice(range(3))
             if choice == 0:
