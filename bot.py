@@ -19,13 +19,15 @@ INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 
 # USEFUL FUNCTIONS
-def case_correction(message, response):
+def correct_case(message, response):
     if message.content.isupper():
         return response.upper()
     elif message.content.islower():
         return response.lower()
-    else:
+    elif message.content.istitle():
         return response.title()
+    else:
+        return response.capitalize()
 
 
 def search_gifs(query):
@@ -53,7 +55,7 @@ async def on_ready():
 
 @bot.command(name="sally")
 async def sally(ctx, arg: str):
-    print(f"ctx: {ctx}")
+    print(f"\ntx: {ctx}")
     print(f"arg: {arg}")
     if arg == "help":
         with ctx.channel.typing():
@@ -181,72 +183,80 @@ async def sally(ctx, arg: str):
 @bot.event
 async def on_message(message):
     channel = message.channel
-    print(f"Content: {message.content}")
+    print(f"\nContent: {message.content}")
     print(f"Author: {message.author}")
     print(f"Author ID: {message.author.id}")
 
     # stops it replying to itself
     if (message.author == bot.user) or (message.content == ""):
+        print("Trigger: It's me!")
         await bot.process_commands(message)
-
-    # reacts to all of Leo's messages
-    if message.author.id == 689751502700675072:
-        with channel.typing():
-            try:
-                await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
-            except discord.errors.HTTPException:
-                await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
-
-    # responds to Leo's Roars
-    if message.author.id == 689751502700675072 and match("^Ro+a+r$", message.content) is not None:
-        with channel.typing():
-            choice = random.choice(range(3))
-            if choice == 0:
-                count = message.cotent.count("o")
-                await channel.send(f"{'a' * count + 'r' * int(count/2) + 'g' * int(count/2) + 'h' * int(count/2)}")
-            elif choice == 1:
-                await channel.send(gif_response("scream"))
-            else:
-                await channel.send(":shushing_face:")
-
-    # Geordie Translations
-    # special case for "no"
-    elif message.content.lower() == "no":
-        with channel.typing():
-            await channel.send(case_correction(message, "nar"))
-
-    # special case for "good"
-    elif message.content.lower() == "good":
-        with channel.typing():
-            await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'canny good like')}")
-
-    # special case for "yes"
-    elif message.content.lower() == "yes":
-        with channel.typing():
-            await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'whey aye man')}")
-
-    # special case for "really good"
-    elif message.content.lower() == "really good":
-        with channel.typing():
-            await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'purely belta')}")
-
-    # normal translations
+        
     else:
-        with open("data/geordie.json", "r") as f:
-            translations = load(f)
-            msg = message.content.split(" ")
-            if any(x in translations.keys() for x in msg):
-                with channel.typing():
-                    new_words = []
-                    for word in msg:
-                        if word == translations.keys():
-                            new_word = translations[word]
-                            new_words.append(new_word)
-                        else:
-                            new_words.append(word)
-                    new_msg = " ".join(new_words)
-                    print(new_msg)
-                    await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, new_msg)}")
-    await bot.process_commands(message)
+        # reacts to all of Leo's messages
+        if message.author.id == 689751502700675072:
+            print("Trigger: It's Leo!")
+            with channel.typing():
+                try:
+                    await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
+                except discord.errors.HTTPException:
+                    await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
+    
+        # responds to Leo's Roars
+        if message.author.id == 689751502700675072 and match("^Ro+a+r$", message.content) is not None:
+            print("Trigger: Leo Roared")
+            with channel.typing():
+                choice = random.choice(range(3))
+                if choice == 0:
+                    count = message.cotent.count("o")
+                    await channel.send(f"{'a' * count + 'r' * int(count/2) + 'g' * int(count/2) + 'h' * int(count/2)}")
+                elif choice == 1:
+                    await channel.send(gif_response("scream"))
+                else:
+                    await channel.send(":shushing_face:")
+    
+        # Geordie Translations
+        # special case for "no"
+        elif message.content.lower() == "no":
+            print("Trigger: Translation special case - no")
+            with channel.typing():
+                await channel.send(correct_case(message, "nar"))
+    
+        # special case for "good"
+        elif message.content.lower() == "good":
+            print("Trigger: Translation special case - good")
+            with channel.typing():
+                await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, 'canny good like')}")
+    
+        # special case for "yes"
+        elif message.content.lower() == "yes":
+            print("Trigger: Translation special case - yes")
+            with channel.typing():
+                await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, 'whey aye man')}")
+    
+        # special case for "really good"
+        elif message.content.lower() == "really good":
+            with channel.typing():
+                await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, 'purely belta')}")
+    
+        # normal translations
+        else:
+            with open("data/geordie.json", "r") as f:
+                translations = load(f)
+                msg = message.content.split(" ")
+                if any(x in translations.keys() for x in msg):
+                    print("Trigger: We've a translation on our hands")
+                    with channel.typing():
+                        new_words = []
+                        for word in msg:
+                            if word == translations.keys():
+                                new_word = translations[word]
+                                new_words.append(new_word)
+                            else:
+                                new_words.append(word)
+                        new_msg = " ".join(new_words)
+                        print(new_msg)
+                        await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, new_msg)}")
+        await bot.process_commands(message)
     
 bot.run(TOKEN)
