@@ -245,18 +245,23 @@ async def on_message(message):
                 translations = load(f)
                 msg = message.content.split(" ")
                 if any(x in translations.keys() for x in msg):
-                    print("Trigger: We've a translation on our hands")
+                    print(f"Trigger: We've a translation on our hands.. {msg}")
                     with channel.typing():
                         new_words = []
                         for word in msg:
+                            print(f"Word: {word}")
                             if word == translations.keys():
+                                print("Found a translation")
                                 new_word = translations[word]
                                 new_words.append(new_word)
                             else:
+                                print("Not found a translation")
                                 new_words.append(word)
+                            print(new_words)
                         new_msg = " ".join(new_words)
                         print(new_msg)
                         await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, new_msg)}")
+
         await bot.process_commands(message)
     
 bot.run(TOKEN)
