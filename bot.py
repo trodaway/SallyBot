@@ -20,15 +20,15 @@ INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 
 # USEFUL FUNCTIONS
-def correct_case(message, response):
-    if message.content.isupper():
+def case(message, response):
+    if message.isupper():
         return response.upper()
-    elif message.content.islower():
+    elif message.islower():
         return response.lower()
-    elif message.content.istitle():
-        return response.title()
+    elif message.replace("'m", "").replace("'s", "").istitle():  # handles contractions
+        return response.title().replace("'M", "'m").replace("'S", "'s")
     else:
-        return response.capitalize()
+        return string.capwords(response, sep=" ")
 
 
 def search_gifs(query):
@@ -143,10 +143,11 @@ async def sally(ctx, arg: str):
                     friends = line.split(",")
                     for friend in friends:
                         friend_list.append(friend)
+                # if a NUSSAGG member tries to steal
                 if ctx.author.roles == "692795798416523356":
                     await ctx.send(f"{ctx.author.mention} you can't steal me, you're part of my club")
                 # if a friend tries to steal, un-friend them
-                if ctx.author.id in friend_list:
+                elif ctx.author.id in friend_list:
                     friend_list.remove(ctx.author.id)
                     with open("data/friend.txt", "w") as f:
                         f.write(",".join(friend_list))
@@ -215,36 +216,42 @@ async def on_message(message):
                     await channel.send(gif_response("scream"))
                 else:
                     await channel.send(":shushing_face:")
-    
+
         # Geordie Translations
         # special case for "no"
         elif message.content.lower() == "no":
             print("Trigger: Translation special case - no")
             with channel.typing():
-                await channel.send(correct_case(message, "nar"))
+                await channel.send(case(message, "nar"))
     
         # special case for "good"
         elif message.content.lower() == "good":
             print("Trigger: Translation special case - good")
-            with channel.typing():
-                await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, 'canny good like')}")
+            await channel.send(f"In the Toon we'd say that like:\n>>> {case(message.content, 'canny good like')}")
     
         # special case for "yes"
         elif message.content.lower() == "yes":
             print("Trigger: Translation special case - yes")
-            with channel.typing():
-                await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, 'whey aye man')}")
+            await channel.send(f"In the Toon we'd say that like:\n>>> {case(message.content, 'whey aye man')}")
     
         # special case for "really good"
         elif message.content.lower() == "really good":
-            with channel.typing():
-                await channel.send(f"In the Toon we'd say that like:\n>>> {correct_case(message, 'purely belta')}")
-    
+            print("Trigger: Translation special case - really good")
+            await channel.send(f"In the Toon we'd say that like:\n>>> {case(message.content, 'purely belta')}")
+
         # normal translations
         else:
             with open("data/geordie.json", "r") as f:
                 translations = load(f)
                 msg = message.content.split(" ")
+                """
+                j = len(msg)
+                while j > 0:
+                    for i in range(len(msg)+1):
+                        if i < j:
+                            print(" ".join(msg[i:j]))
+                    j += 1
+                """
                 keys = [key.lower() for key in translations.keys()]
                 if any(x in keys for x in msg):
                     print(f"Trigger: We've a translation on our hands.. {msg}")
@@ -255,7 +262,7 @@ async def on_message(message):
                             if word in keys:
                                 print("Found a translation")
                                 new_word = translations[word]
-                                new_words.append(correct_case(word, new_word))
+                                new_words.append(case(word, new_word))
                             else:
                                 print("Not found a translation")
                                 new_words.append(word)
