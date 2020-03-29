@@ -161,20 +161,20 @@ async def sally(ctx, arg: str):
             profile = instaloader.Profile.from_username(insta.context, "nussaggsallyandleo")
             posts = profile.get_posts()
             post = next(posts)
-            image_path = "latest_insta.jpg"
+            image_path = "nussaggsallyandleo_latest_insta.jpg"
             if os.path.exists(image_path):
                 os.remove(image_path)
             with open(image_path, "wb") as f:
                 f.write(requests.get(post.url).content)
-            await ctx.send("<@689751502700675072> and I are on Instagram [@nussaggsallyandleo]"
-                           "(https://www.instagram.com/nussaggsallyandleo/)")
-            await ctx.send("As a taster, here's our latest pic", file=discord.File("latest_insta.jpg"))
+            await ctx.send("<@689751502700675072> and I are on Instagram; you can find us at"
+                           "https://www.instagram.com/nussaggsallyandleo/. As a taster, here's our latest pic",
+                           file=discord.File(image_path))
         os.remove(image_path)
 
     # if command doesn't exist
     else:
         with ctx.channel.typing():
-            await ctx.send("I don't understand you! Type '!sally help' to learn what I can do")
+            await ctx.send("I don't understand you! Type '?sally help' to learn what I can do")
 
 
 @bot.event
@@ -186,7 +186,7 @@ async def on_message(message):
 
     # stops it replying to itself
     if message.author.id == "693216082567233667" or message == "":
-        return
+        await bot.process_commands(message)
 
     # reacts to all of Leo's messages
     elif message.author.id == "689751502700675072":
