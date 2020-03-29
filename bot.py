@@ -166,8 +166,8 @@ async def sally(ctx, arg: str):
                 os.remove(image_path)
             with open(image_path, "wb") as f:
                 f.write(requests.get(post.url).content)
-            await ctx.send("<@689751502700675072> and I are on Instagram; you can find us at"
-                           "https://www.instagram.com/nussaggsallyandleo/. As a taster, here's our latest pic",
+            await ctx.send("<@689751502700675072> and I are on Instagram; you can find us at "
+                           "https://www.instagram.com/nussaggsallyandleo/. As a taster, here's our latest pic...",
                            file=discord.File(image_path))
         os.remove(image_path)
 
@@ -185,7 +185,7 @@ async def on_message(message):
     print(f"Author ID: {message.author.id}")
 
     # stops it replying to itself
-    if message.author.id == "693216082567233667" or message == "":
+    if (message.author == bot.user) or (message.content == ""):
         await bot.process_commands(message)
 
     # reacts to all of Leo's messages
@@ -207,22 +207,22 @@ async def on_message(message):
 
     # Geordie Translations
     # special case for "no"
-    elif (message.content.lower()) == "no":
+    elif message.content.lower() == "no":
         with channel.typing():
             await channel.send(case_correction(message, "nar"))
 
     # special case for "good"
-    elif (message.content.lower()) == "good":
+    elif message.content.lower() == "good":
         with channel.typing():
             await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'canny good like')}")
 
     # special case for "yes"
-    elif (message.content.lower()) == "yes":
+    elif message.content.lower() == "yes":
         with channel.typing():
             await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'whey aye man')}")
 
     # special case for "really good"
-    elif (message.content.lower()) == "really good":
+    elif message.content.lower() == "really good":
         with channel.typing():
             await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'purely belta')}")
 
