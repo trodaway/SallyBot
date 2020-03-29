@@ -166,8 +166,8 @@ async def sally(ctx, arg: str):
                 os.remove(image_path)
             with open(image_path, "wb") as f:
                 f.write(requests.get(post.url).content)
-            await ctx.send("You can find mine and <@689751502700675072>'s Instagram [@nussaggsallyandleo]"
-                           "(https://www.instagram.com/nussaggsallyandleo/")
+            await ctx.send("<@689751502700675072> and I are on Instagram [@nussaggsallyandleo]"
+                           "(https://www.instagram.com/nussaggsallyandleo/)")
             await ctx.send("As a taster, here's our latest pic", file=discord.File("latest_insta.jpg"))
         os.remove(image_path)
 
@@ -214,17 +214,17 @@ async def on_message(message):
     # special case for "good"
     elif (message.content.lower()) == "good":
         with channel.typing():
-            await channel.send(f"In the Toon we'd say that like: >>> {case_correction(message, 'canny good like')}")
+            await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'canny good like')}")
 
     # special case for "yes"
     elif (message.content.lower()) == "yes":
         with channel.typing():
-            await channel.send(f"In the Toon we'd say that like: >>> {case_correction(message, 'whey aye man')}")
+            await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'whey aye man')}")
 
     # special case for "really good"
     elif (message.content.lower()) == "really good":
         with channel.typing():
-            await channel.send(f"In the Toon we'd say that like: >>> {case_correction(message, 'purely belta')}")
+            await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, 'purely belta')}")
 
     # normal translations
     else:
@@ -242,7 +242,7 @@ async def on_message(message):
                             new_words.append(word)
                     new_msg = " ".join(new_words)
                     print(new_msg)
-                    await channel.send(f"In the Toon we'd say that like: >>> {case_correction(message, new_msg)}")
+                    await channel.send(f"In the Toon we'd say that like:\n>>> {case_correction(message, new_msg)}")
     await bot.process_commands(message)
     
 bot.run(TOKEN)
