@@ -193,9 +193,9 @@ async def on_message(message):
     if message.author.id == 689751502700675072:
         with channel.typing():
             try:
-                await message.add_reaction(emoji="<:Sally:689616621576257557>")  # only works on SSAGO server
+                await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
             except discord.errors.HTTPException:
-                await message.add_reaction(emoji="<:star_struck:>")  # back-up, if not on the SSAGO server
+                await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
 
     # responds to Leo's Roars
     if message.author.id == 689751502700675072 and match("^Ro+a+r$", message.content) is not None:
