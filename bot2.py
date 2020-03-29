@@ -186,13 +186,13 @@ async def on_message(message):
         
     else:
         # reacts to all of Leo's messages
-        if message.author.id == 689751502700675072:
-            print("Trigger: It's Leo!")
-            with channel.typing():
-                try:
-                    await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
-                except discord.errors.HTTPException:
-                    await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
+        # if message.author.id == 689751502700675072:
+        #     print("Trigger: It's Leo!")
+        #     with channel.typing():
+        #         try:
+        #             await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
+        #         except discord.errors.HTTPException:
+        #             await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
     
         # responds to Leo's Roars
         if message.author.id == 689751502700675072 and match("^Ro+a+r$", message.content) is not None:
