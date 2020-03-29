@@ -240,8 +240,6 @@ async def on_message(message):
                     new_msg = " ".join(new_words)
                     print(new_msg)
                     await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, new_msg)}")
-            else:
-                return
     await bot.process_commands(message)
     
 bot.run(TOKEN)
