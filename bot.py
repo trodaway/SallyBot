@@ -153,9 +153,6 @@ async def sally(ctx, arg: str):
 
     elif arg == "insta":
         with ctx.channel.typing():
-            await ctx.send("You can find mine and <!@689751502700675072>'s Instagram here -> "
-                           "https://www.instagram.com/nussaggsallyandleo/")
-
             # displays the latest instagram photo on Sally and Leo's profile
             insta = instaloader.Instaloader()
             insta.login("nussaggsallyandleo", INSTAGRAM_PASSWORD)
@@ -166,7 +163,9 @@ async def sally(ctx, arg: str):
                 os.mkdir("temp")
             with open("temp/latest_insta.jpg", "wb") as f:
                 f.write(requests.get(post.url).content)
-            await ctx.send(file=discord.File("temp/latest_insta.jpg"))
+            await ctx.send("You can find mine and <@689751502700675072>'s Instagram [@nussaggsallyandleo]"
+                           "(https://www.instagram.com/nussaggsallyandleo/")
+            await ctx.send("As a taster, here's our latest pic", file=discord.File("temp/latest_insta.jpg"))
         os.remove("temp/latest_insta.jpg")
 
     # if command doesn't exist
@@ -212,17 +211,17 @@ async def on_message(message):
     # special case for "good"
     elif (message.content.lower()) == "good":
         with channel.typing():
-            await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, 'canny good like')}")
+            await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, 'canny good like')}")
 
     # special case for "yes"
     elif (message.content.lower()) == "yes":
         with channel.typing():
-            await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, 'whey aye man')}")
+            await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, 'whey aye man')}")
 
     # special case for "really good"
     elif (message.content.lower()) == "really good":
         with channel.typing():
-            await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, 'purely belta')}")
+            await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, 'purely belta')}")
 
     # normal translations
     else:
@@ -239,8 +238,10 @@ async def on_message(message):
                         else:
                             new_words.append(word)
                     new_msg = " ".join(new_words)
-                    await channel.send(f"In the Newcastle we'd say that like: {case_correction(message, new_msg)}")
+                    print(new_msg)
+                    await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, new_msg)}")
             else:
                 return
+    await bot.process_commands(message)
     
 bot.run(TOKEN)
