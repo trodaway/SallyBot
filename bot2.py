@@ -211,8 +211,7 @@ async def on_message(message):
         # special case for "no"
         elif message.content.lower() == "no":
             print("Trigger: Translation special case - no")
-            with channel.typing():
-                await channel.send(case(message, "nar"))
+            await channel.send(f"In the Toon we'd say that like:\n>>> {case(message.content, 'nar')}")
     
         # special case for "good"
         elif message.content.lower() == "good":
