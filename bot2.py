@@ -46,7 +46,7 @@ def gif_response(emotion):
 
 
 # BASIC TEXT COMMANDS
-bot = commands.Bot(command_prefix=commands.when_mentioned_or(), case_insensitive=True, help_command="help")
+bot = commands.Bot(command_prefix=commands.when_mentioned_or(), case_insensitive=True)
 
 
 @bot.event
