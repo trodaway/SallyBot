@@ -79,7 +79,7 @@ async def sally(ctx, arg: str):
         with ctx.channel.typing():
             await ctx.send("Here's the git repo that contains all my inner code. I may look like the best teddy "
                            "Seahorse you've ever seen but there's a computer behind me!\n"
-                           "https://github.com/TimRodaway/SallyBot")
+                           "https://github.com/trodaway/SallyBot")
 
     elif arg == "rally":
         with ctx.channel.typing():
@@ -211,17 +211,17 @@ async def on_message(message):
     # special case for "good"
     elif (message.content.lower()) == "good":
         with channel.typing():
-            await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, 'canny good like')}")
+            await channel.send(f"In the Toon we'd say that like: >>> {case_correction(message, 'canny good like')}")
 
     # special case for "yes"
     elif (message.content.lower()) == "yes":
         with channel.typing():
-            await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, 'whey aye man')}")
+            await channel.send(f"In the Toon we'd say that like: >>> {case_correction(message, 'whey aye man')}")
 
     # special case for "really good"
     elif (message.content.lower()) == "really good":
         with channel.typing():
-            await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, 'purely belta')}")
+            await channel.send(f"In the Toon we'd say that like: >>> {case_correction(message, 'purely belta')}")
 
     # normal translations
     else:
@@ -239,7 +239,7 @@ async def on_message(message):
                             new_words.append(word)
                     new_msg = " ".join(new_words)
                     print(new_msg)
-                    await channel.send(f"In the Toon we'd say that like: >>>{case_correction(message, new_msg)}")
+                    await channel.send(f"In the Toon we'd say that like: >>> {case_correction(message, new_msg)}")
     await bot.process_commands(message)
     
 bot.run(TOKEN)
