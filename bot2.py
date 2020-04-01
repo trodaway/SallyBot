@@ -10,7 +10,7 @@ from giphy_client.rest import ApiException
 import requests
 import instaloader
 from bs4 import BeautifulSoup
-import urllib
+import urllib.parse
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.isfile("data/friends.txt"):
@@ -269,7 +269,8 @@ async def on_message(message):
 
         # translates every 'x' to geordie
         elif translator_frequency != 0:  # set it to 0 to stop it from translating
-            if random.randrange(translator_frequency) == 0:
+            if random.randrange(translator_frequency) == 0 and \
+                    re.match("^<@!?693216082567233667>.*$", message.content) is not None:
                 translated_text = translator(message.content)
                 if translated_text is not None:
                     await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
