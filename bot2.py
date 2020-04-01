@@ -1,22 +1,23 @@
 import os
 import random
-from json import load
+import json
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
-from re import match
+import dotenv
+import re
 import giphy_client
 from giphy_client.rest import ApiException
 import requests
 import instaloader
 from bs4 import BeautifulSoup
+import urllib
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.isfile("data/friends.txt"):
     with open("data/friends.txt", "w") as file:
         file.write("689579955012632586")  # adds Tim Rodaway, creator, as first friend
 
-load_dotenv()
+dotenv.load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GIPHY_TOKEN = os.getenv("GIPHY_TOKEN")
 INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
@@ -40,7 +41,8 @@ def gif_response(emotion):
 
 
 def translator(text_to_translate, dialect="geordie"):
-    url = f"http://www.whoohoo.co.uk/main.asp?string={text_to_translate}&pageid={dialect}&topic=translator"
+    text_for_url = urllib.parse.quote(text_to_translate)
+    url = f"http://www.whoohoo.co.uk/main.asp?string={text_for_url}&pageid={dialect}&topic=translator"
     x = requests.post(url, timeout=1)
     if x.status_code == 200:
         soup = BeautifulSoup(x.text, features="html.parser")
@@ -109,7 +111,7 @@ async def fact(ctx):
     print(f"*****\nCommand: fact\nCalled by: {ctx.author}")
     try:
         with open("data/facts.json", "r") as fact_file:
-            facts = load(fact_file)
+            facts = json.load(fact_file)
             single_fact = facts[str(random.choice(range(len(facts))))]
             await ctx.send(single_fact)
     except FileNotFoundError:
@@ -250,7 +252,7 @@ async def on_message(message):
         #             await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
     
         # responds to Leo's Roars
-        if message.author.id == 689751502700675072 and match("^Ro+a+r$", message.content) is not None:
+        if message.author.id == 689751502700675072 and re.match("^Ro+a+r$", message.content) is not None:
             print("Trigger: Leo Roared")
             choice = random.choice(range(3))
             if choice == 0:
