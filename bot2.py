@@ -63,14 +63,14 @@ async def on_ready():
 
 
 @bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
-             aliases=["hello", "wye aye"])
+             aliases=["hello", "hey"])
 async def hi(ctx):
     print(f"*****\nCommand: hi\nCalled by: {ctx.author}")
     await ctx.send(f'Hi {ctx.author.mention}!')
 
 
 @bot.command(name="leo", brief="I'll talk about Leo", help="Leo is my best friend, let's talk about him!",
-             aliases=["leo the lion", "<@689751502700675072>", "<!@689751502700675072>"])  # Leo's user ID
+             aliases=["<@689751502700675072>", "<@!689751502700675072>", "<@&689751502700675072>"])  # Leo's user ID
 async def leo(ctx):
     print(f"*****\nCommand: leo\nCalled by: {ctx.author}")
     await ctx.send("Leo is my Best Friend! We go on all our adventures together but he has to protect me, as other "
@@ -84,8 +84,7 @@ async def git(ctx):
                    " ever seen but there's a computer behind me!\nhttps://github.com/trodaway/SallyBot")
 
 
-@bot.command(name="rally", brief="I'll talk about Viking Rally", help="Find out more about Viking Rally",
-             aliases=["viking rally"])
+@bot.command(name="rally", brief="I'll talk about Viking Rally", help="Find out more about Viking Rally")
 async def rally(ctx):
     print(f"*****\nCommand: rally\nCalled by: {ctx.author}")
     await ctx.send("My friends from NUSSAGG and DUSAGG are hosting Viking Rally in November 2021! Please come join us "
@@ -105,8 +104,7 @@ async def _credits(ctx):
                        "currently a little fuzzy as to who made me.")
 
 
-@bot.command(name="fact", brief="Get a seahorse fact", help="I'll provide one of my many facts about seahorses",
-             aliases=["seahorse fact"])
+@bot.command(name="fact", brief="Get a seahorse fact", help="I'll provide one of my many facts about seahorses")
 async def fact(ctx):
     print(f"*****\nCommand: fact\nCalled by: {ctx.author}")
     try:
@@ -118,8 +116,7 @@ async def fact(ctx):
         await ctx.send("I don't seem to know any facts at the minute :tired_face:. Please try again later!")
 
 
-@bot.command(name="friend", brief="Befriend me", help="Ask about being my friend",
-             aliases=["befriend", "can I be your friend?", "can we be friends?", "let's be friends"])
+@bot.command(name="friend", brief="Befriend me", help="Ask about being my friend", aliases=["befriend"])
 async def friend(ctx):
     print(f"*****\nCommand: friend\nCalled by: {ctx.author}")
     try:
@@ -140,8 +137,7 @@ async def friend(ctx):
         await ctx.send(f"My memory's a little fuzzy right now. Please try asking me again later!")
 
 
-@bot.command(name="friends", brief="Friend list", help="Discover who I am friends with",
-             aliases=["friend list", "who are your friends?"])
+@bot.command(name="friends", brief="Friend list", help="Discover who I am friends with")
 async def friends(ctx):
     print(f"*****\nCommand: friends\nCalled by: {ctx.author}")
     try:
@@ -194,8 +190,7 @@ async def steal(ctx):
 
 
 @bot.command(name="frequency", hidden=True, brief="Change how often I translate",
-             help="Set the frequency of my translations. Set me to 0 to stop",
-             aliases=["translator frequency", "set frequency", "set translator frequency"])
+             help="Set the frequency of my translations. Set me to 0 to stop")
 async def frequency(ctx, arg):
     global translator_frequency
     translator_frequency = int(arg)
@@ -273,9 +268,18 @@ async def on_message(message):
             if random.randrange(translator_frequency) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
                 translated_text = translator(message.content)
-                if translated_text is not None:
+                if translated_text is not None and (translated_text != message.content or
+                                                    translated_text.rstrip(".") != message.content):
                     await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
         await bot.process_commands(message)
-    
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await bot.process_commands(ctx.message)
+    raise error
+
+
 bot.run(TOKEN)
