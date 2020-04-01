@@ -1,2 +1,2 @@
-# LeoBot
-A discord bot for Leo the Lion - One of NUSSAGG's Mascots
+# SallyBot
+A discord bot for Sally the Seahorse - One of NUSSAGG's Mascots

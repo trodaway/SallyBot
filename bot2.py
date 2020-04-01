@@ -9,28 +9,22 @@ import giphy_client
 from giphy_client.rest import ApiException
 import requests
 import instaloader
-import string
+from bs4 import BeautifulSoup
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+if not os.path.isfile("data/friends.txt"):
+    with open("data/friends.txt", "w") as file:
+        file.write("689579955012632586")  # adds Tim Rodaway, creator, as first friend
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GIPHY_TOKEN = os.getenv("GIPHY_TOKEN")
 INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
+translator_frequency = 1
+
 
 # USEFUL FUNCTIONS
-def case(message, response):
-    if message.isupper():
-        return response.upper()
-    elif message.islower():
-        return response.lower()
-    elif message.replace("'m", "").replace("'s", "").istitle():  # handles contractions
-        return response.title().replace("'M", "'m").replace("'S", "'s")
-    else:
-        return string.capwords(response, sep=" ")
-
-
 def search_gifs(query):
     try:
         return giphy_client.DefaultApi().gifs_search_get(GIPHY_TOKEN, query, limit=10, rating='g')
@@ -45,8 +39,20 @@ def gif_response(emotion):
     return gif[0].url
 
 
+def translator(text_to_translate, dialect="geordie"):
+    url = f"http://www.whoohoo.co.uk/main.asp?string={text_to_translate}&pageid={dialect}&topic=translator"
+    x = requests.post(url, timeout=1)
+    if x.status_code == 200:
+        soup = BeautifulSoup(x.text, features="html.parser")
+        translation = soup.find_all('form')[1].b.get_text(strip=True)
+        return translation
+    else:
+        print(f"POST Request returned a status code of {x.status_code} for {url}")
+        return None
+
+
 # BASIC TEXT COMMANDS
-bot = commands.Bot(command_prefix=commands.when_mentioned_or(), case_insensitive=True)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("?Sally"), case_insensitive=True)
 
 
 @bot.event
@@ -54,39 +60,42 @@ async def on_ready():
     print("I'm connected and ready to go!")
 
 
-@bot.command(name="hi", brief="I'll say hi", description="Say hi to me and I'll say hi back")
+@bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
+             aliases=["hello", "Areet wor kid?", "Areet bonny lad"])
 async def hi(ctx):
     print(f"*****\nCommand: hi\nCalled by: {ctx.author}")
     await ctx.send(f'Hi {ctx.author.mention}!')
 
 
-@bot.command(name="leo", brief="I'll talk about Leo", description="Leo is my best friend, let's talk about him!")
+@bot.command(name="leo", brief="I'll talk about Leo", help="Leo is my best friend, let's talk about him!",
+             aliases=["leo the lion", "<@689751502700675072>", "<!@689751502700675072>"])  # Leo's user ID
 async def leo(ctx):
     print(f"*****\nCommand: leo\nCalled by: {ctx.author}")
     await ctx.send("Leo is my Best Friend! We go on all our adventures together but he has to protect me, as other "
                    "SSAGO-ers like to steal me! :frowning:")
 
 
-@bot.command(name="git", brief="Link to my Git repo", description="Get a link to the magic code behind me")
+@bot.command(name="git", brief="Link to my Git repo", help="Get a link to the magic code behind me", aliases=["github"])
 async def git(ctx):
     print(f"*****\nCommand: git\nCalled by: {ctx.author}")
     await ctx.send("Here's the git repo that contains all my inner code. I may look like the best teddy Seahorse you've"
                    " ever seen but there's a computer behind me!\nhttps://github.com/trodaway/SallyBot")
 
 
-@bot.command(name="rally", brief="I'll talk about Viking Rally", description="Find out more about Viking Rally")
+@bot.command(name="rally", brief="I'll talk about Viking Rally", help="Find out more about Viking Rally",
+             aliases=["viking rally"])
 async def rally(ctx):
     print(f"*****\nCommand: rally\nCalled by: {ctx.author}")
     await ctx.send("My friends from NUSSAGG and DUSAGG are hosting Viking Rally in November 2021! Please come join us "
                    "for a weekend of great fun in the Toon and surrounding areas. Its a canny place to be!")
 
 
-@bot.command(name="credits", brief="My credits", description="Find out who makes me work (or not work!)")
+@bot.command(name="credits", brief="My credits", help="Find out who makes me work (or not work!)")
 async def _credits(ctx):
     print(f"*****\nCommand: credits\nCalled by: {ctx.author}")
     try:
-        with open("data/contributors.txt", "r") as file:
-            contributors = "\n".join(file.readline().replace(", ", ",").split(","))
+        with open("data/contributors.txt", "r") as contributors_file:
+            contributors = "\n".join(contributors_file.readline().replace(", ", ",").split(","))
             await ctx.send(f"I'm SallyBot, a mascot from Geordie land, and I belong to NUSSAGG. I have the following "
                            f"people to thank for my creation:\n>>> {contributors}")
     except FileNotFoundError:
@@ -94,48 +103,77 @@ async def _credits(ctx):
                        "currently a little fuzzy as to who made me.")
 
 
-@bot.command(name="fact", brief="Get a seahorse fact", description="I'll provide one of my many facts about seahorses")
+@bot.command(name="fact", brief="Get a seahorse fact", help="I'll provide one of my many facts about seahorses",
+             aliases=["seahorse fact"])
 async def fact(ctx):
     print(f"*****\nCommand: fact\nCalled by: {ctx.author}")
     try:
-        with open("data/facts.json", "r") as file:
-            facts = load(file)
+        with open("data/facts.json", "r") as fact_file:
+            facts = load(fact_file)
             single_fact = facts[str(random.choice(range(len(facts))))]
             await ctx.send(single_fact)
     except FileNotFoundError:
         await ctx.send("I don't seem to know any facts at the minute :tired_face:. Please try again later!")
 
 
-@bot.command(name="can I be your friend?", breif="Befriend me", description="Ask about being my friend")
+@bot.command(name="friend", brief="Befriend me", help="Ask about being my friend",
+             aliases=["befriend", "can I be your friend?", "can we be friends?", "let's be friends"])
 async def friend(ctx):
-    print(f"*****\nCommand: can I be your friend?\nCalled by: {ctx.author}")
+    print(f"*****\nCommand: friend\nCalled by: {ctx.author}")
     try:
         friend_list = []
-        with open("data/friends.txt", "r") as file:
-            line = file.readline()
-            friends = line.split(",")
-            for single_friend in friends:
+        with open("data/friends.txt", "r") as friends_file:
+            line = friends_file.readline()
+            multiple_friends = line.split(",")
+            for single_friend in multiple_friends:
                 friend_list.append(single_friend)
         print(friend_list)
         if ctx.author.id in friend_list:
             await ctx.send(f"{ctx.author.mention} you're already my friend!")
         else:
-            with open("data/friends.txt", "a") as file:
-                file.write(f",{ctx.author.id}")
+            with open("data/friends.txt", "a") as friends_file:
+                friends_file.write(f",{ctx.author.id}")
             await ctx.send(f"{ctx.author.mention} you're now my friend!")
     except FileNotFoundError:
         await ctx.send(f"My memory's a little fuzzy right now. Please try asking me again later!")
 
 
-@bot.command(name="steal", brief="Try and steal me", description="You can try and steal me, but will you succeed?")
+@bot.command(name="friends", brief="Friend list", help="Discover who I am friends with",
+             aliases=["friend list", "who are your friends?"])
+async def friends(ctx):
+    print(f"*****\nCommand: friends\nCalled by: {ctx.author}")
+    try:
+        friend_list = []
+        with open("data/friends.txt", "r") as friends_file:
+            line = friends_file.readline()
+            multiple_friends = line.split(",")
+            for single_friend in multiple_friends:
+                friend_list.append(single_friend)
+        print(friend_list)
+        if len(friend_list) == 0:
+            await ctx.send(f"Unfortunately I don't have any friends at the moment. {ctx.author.mention}, perhaps you "
+                           f"could befriend me")
+        else:
+            await ctx.send(f"My friends are:\n>>>{chr(10).join([f'{i}' for i in friend_list])}")  # chr(10) = \n
+    except FileNotFoundError:
+        await ctx.send(f"My memory's a little fuzzy right now. Please try asking me again later!")
+
+
+@bot.command(name="say", hidden=True, brief="Echoes what you say", help="Get Sally to say what you want her to say")
+async def say(ctx, arg: str):
+    print(f"*****\nCommand: say\nCalled by: {ctx.author}")
+    await ctx.send(arg)
+
+
+@bot.command(name="steal", brief="Try and steal me", help="You can try and steal me, but will you succeed?")
 async def steal(ctx):
     print(f"*****\nCommand: steal\nCalled by: {ctx.author}")
     try:
         friend_list = []
-        with open("data/friends.txt", "r") as f:
-            line = f.readline()
-            friends = line.split(",")
-            for single_friend in friends:
+        with open("data/friends.txt", "r") as friends_file:
+            line = friends_file.readline()
+            multiple_friends = line.split(",")
+            for single_friend in multiple_friends:
                 friend_list.append(single_friend)
         # if a NUSSAGG member tries to steal
         if ctx.author.roles.id == "692795798416523356":
@@ -153,7 +191,22 @@ async def steal(ctx):
         await ctx.send("Better luck next time, I swam away")
 
 
-@bot.command(name="instagram", brief="Link to my Instagram", description="Get a link to mine and Leo's Instagram")
+@bot.command(name="frequency", hidden=True, brief="Change how often I translate",
+             help="Set the frequency of my translations. Set me to 0 to stop",
+             aliases=["translator frequency", "set frequency", "set translator frequency"])
+async def frequency(ctx):
+    global translator_frequency
+    translator_frequency = int(ctx.content)
+    print(f"Translator frequency set to: {translator_frequency}")
+    if translator_frequency == 0:
+        await ctx.send("I'll stop translating")
+    elif translator_frequency == 1:
+        await ctx.send("I'll translate every message!")
+    else:
+        await ctx.send(f"There's now a 1 in {translator_frequency} chance of me translating a message")
+
+
+@bot.command(name="instagram", brief="Link to my Instagram", help="Get a link to mine and Leo's Instagram")
 async def instagram(ctx):
     print(f"*****\nCommand: instagram\nCalled by: {ctx.author}")
     with ctx.channel.typing():
@@ -163,13 +216,15 @@ async def instagram(ctx):
         profile = instaloader.Profile.from_username(insta.context, "nussaggsallyandleo")
         posts = profile.get_posts()
         post = next(posts)
+        print(post)
         image_path = "nussaggsallyandleo_latest_insta.jpg"
         if os.path.exists(image_path):
             os.remove(image_path)
         with open(image_path, "wb") as f:
             f.write(requests.get(post.url).content)
-        await ctx.send("<@689751502700675072> and I are on Instagram; you can find us at "
-                       "https://www.instagram.com/nussaggsallyandleo/. As a taster, here's our latest pic...",
+        await ctx.send(f"<@689751502700675072> and I are on Instagram; you can find us at "
+                       f"https://www.instagram.com/nussaggsallyandleo/. As a taster, here's our latest pic...\n>>> "
+                       f"{post.caption}",
                        file=discord.File(image_path))
     os.remove(image_path)
 
@@ -207,58 +262,12 @@ async def on_message(message):
                 else:
                     await channel.send(":shushing_face:")
 
-        # Geordie Translations
-        # special case for "no"
-        elif message.content.lower() == "no":
-            print("Trigger: Translation special case - no")
-            await channel.send(f"In the Toon we'd say that like:\n>>> {case(message.content, 'nar')}")
-    
-        # special case for "good"
-        elif message.content.lower() == "good":
-            print("Trigger: Translation special case - good")
-            await channel.send(f"In the Toon we'd say that like:\n>>> {case(message.content, 'canny good like')}")
-    
-        # special case for "yes"
-        elif message.content.lower() == "yes":
-            print("Trigger: Translation special case - yes")
-            await channel.send(f"In the Toon we'd say that like:\n>>> {case(message.content, 'whey aye man')}")
-    
-        # special case for "really good"
-        elif message.content.lower() == "really good":
-            print("Trigger: Translation special case - really good")
-            await channel.send(f"In the Toon we'd say that like:\n>>> {case(message.content, 'purely belta')}")
-
-        # normal translations
-        else:
-            with open("data/geordie.json", "r") as f:
-                translations = load(f)
-                msg = message.content.split(" ")
-                """
-                j = len(msg)
-                while j > 0:
-                    for i in range(len(msg)+1):
-                        if i < j:
-                            print(" ".join(msg[i:j]))
-                    j += 1
-                """
-                keys = [key.lower() for key in translations.keys()]
-                if any(x in keys for x in msg):
-                    print(f"Trigger: We've a translation on our hands.. {msg}")
-                    with channel.typing():
-                        new_words = []
-                        for word in msg:
-                            print(f"Word: {word}")
-                            if word in keys:
-                                print("Found a translation")
-                                new_word = translations[word]
-                                new_words.append(case(word, new_word))
-                            else:
-                                print("Not found a translation")
-                                new_words.append(word)
-                            print(new_words)
-                        new_msg = " ".join(new_words)
-                        print(new_msg)
-                        await channel.send(f"In the Toon we'd say that like:\n>>> {new_msg}")
+        # translates every 'x' to geordie
+        elif translator_frequency != 0:  # set it to 0 to stop it from translating
+            if random.randrange(translator_frequency) == 0:
+                translated_text = translator(message.content)
+                if translated_text is not None:
+                    await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
         await bot.process_commands(message)
     
