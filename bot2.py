@@ -156,13 +156,13 @@ async def friends(ctx):
             await ctx.send(f"Unfortunately I don't have any friends at the moment. {ctx.author.mention}, perhaps you "
                            f"could befriend me")
         else:
-            await ctx.send(f"My friends are:\n>>>{chr(10).join([f'{i}' for i in friend_list])}")  # chr(10) = \n
+            await ctx.send(f"My friends are:\n>>> {chr(10).join([f'<@{i}>' for i in friend_list])}")  # chr(10) = \n
     except FileNotFoundError:
         await ctx.send(f"My memory's a little fuzzy right now. Please try asking me again later!")
 
 
 @bot.command(name="say", hidden=True, brief="Echoes what you say", help="Get Sally to say what you want her to say")
-async def say(ctx, arg: str):
+async def say(ctx, *, arg: str):
     print(f"*****\nCommand: say\nCalled by: {ctx.author}")
     await ctx.send(arg)
 
