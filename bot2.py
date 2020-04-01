@@ -255,7 +255,7 @@ async def on_message(message):
             choice = random.choice(range(3))
             if choice == 0:
                 print("Response: argh")
-                count = message.cotent.count("o")
+                count = message.content.count("o")
                 await channel.send(f"{'a' * count + 'r' * int(count/2) + 'g' * int(count/2) + 'h' * int(count/2)}")
             elif choice == 1:
                 with channel.typing():
