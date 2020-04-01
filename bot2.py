@@ -61,7 +61,7 @@ async def on_ready():
 
 
 @bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
-             aliases=["hello", "Areet wor kid?", "Areet bonny lad"])
+             aliases=["hello", "wye aye"])
 async def hi(ctx):
     print(f"*****\nCommand: hi\nCalled by: {ctx.author}")
     await ctx.send(f'Hi {ctx.author.mention}!')
@@ -194,9 +194,9 @@ async def steal(ctx):
 @bot.command(name="frequency", hidden=True, brief="Change how often I translate",
              help="Set the frequency of my translations. Set me to 0 to stop",
              aliases=["translator frequency", "set frequency", "set translator frequency"])
-async def frequency(ctx):
+async def frequency(ctx, arg):
     global translator_frequency
-    translator_frequency = int(ctx.content)
+    translator_frequency = int(arg)
     print(f"Translator frequency set to: {translator_frequency}")
     if translator_frequency == 0:
         await ctx.send("I'll stop translating")
@@ -223,7 +223,7 @@ async def instagram(ctx):
         with open(image_path, "wb") as f:
             f.write(requests.get(post.url).content)
         await ctx.send(f"<@689751502700675072> and I are on Instagram; you can find us at "
-                       f"https://www.instagram.com/nussaggsallyandleo/. As a taster, here's our latest pic...\n>>> "
+                       f"https://www.instagram.com/nussaggsallyandleo/. As a taster, here's our latest pic...\n\n>>> "
                        f"{post.caption}",
                        file=discord.File(image_path))
     os.remove(image_path)
