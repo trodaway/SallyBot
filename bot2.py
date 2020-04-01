@@ -197,7 +197,7 @@ async def steal(ctx):
 async def frequency(ctx, arg):
     global translator_frequency
     translator_frequency = int(arg)
-    print(f"Translator frequency set to: {translator_frequency}")
+    print(f"***** Translator frequency set to: {translator_frequency} *****")
     if translator_frequency == 0:
         await ctx.send("I'll stop translating")
     elif translator_frequency == 1:
@@ -252,15 +252,18 @@ async def on_message(message):
         # responds to Leo's Roars
         if message.author.id == 689751502700675072 and match("^Ro+a+r$", message.content) is not None:
             print("Trigger: Leo Roared")
-            with channel.typing():
-                choice = random.choice(range(3))
-                if choice == 0:
-                    count = message.cotent.count("o")
-                    await channel.send(f"{'a' * count + 'r' * int(count/2) + 'g' * int(count/2) + 'h' * int(count/2)}")
-                elif choice == 1:
+            choice = random.choice(range(3))
+            if choice == 0:
+                print("Response: argh")
+                count = message.cotent.count("o")
+                await channel.send(f"{'a' * count + 'r' * int(count/2) + 'g' * int(count/2) + 'h' * int(count/2)}")
+            elif choice == 1:
+                with channel.typing():
+                    print("Response: scream")
                     await channel.send(gif_response("scream"))
-                else:
-                    await channel.send(":shushing_face:")
+            else:
+                print("Response: shush")
+                await channel.send(":shushing_face:")
 
         # translates every 'x' to geordie
         elif translator_frequency != 0:  # set it to 0 to stop it from translating
