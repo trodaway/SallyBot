@@ -127,7 +127,7 @@ async def friend(ctx):
             for single_friend in multiple_friends:
                 friend_list.append(single_friend)
         print(friend_list)
-        if ctx.author.id in friend_list:
+        if str(ctx.author.id) in friend_list:
             await ctx.send(f"{ctx.author.mention} you're already my friend!")
         else:
             with open("data/friends.txt", "a") as friends_file:
