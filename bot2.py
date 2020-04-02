@@ -264,11 +264,9 @@ async def on_message(message):
 
         # translates every 'x' to geordie
         elif translator_frequency != 0:  # set it to 0 to stop it from translating
-            print(re.match("^<@[&!]?693216082567233667>.*$", message.content))
             if random.randrange(translator_frequency) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
                 translated_text = translator(message.content)
-                print(f"Translated Text: {translated_text}")
                 if translated_text is not None and not (translated_text == message.content or
                                                         translated_text.rstrip(".") == message.content):
                     await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
