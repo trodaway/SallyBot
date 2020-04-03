@@ -116,6 +116,18 @@ async def fact(ctx):
         await ctx.send("I don't seem to know any facts at the minute :tired_face:. Please try again later!")
 
 
+@bot.command(name="joke", brief="Get a seahorse joke", help="I'll provide one of my many jokes about seahorses")
+async def joke(ctx):
+    print(f"*****\nCommand: joke\nCalled by: {ctx.author}")
+    try:
+        with open("data/jokes.json", "r") as joke_file:
+            jokes = json.load(joke_file)
+            single_joke = jokes[str(random.choice(range(len(jokes))))]
+            await ctx.send(single_joke)
+    except FileNotFoundError:
+        await ctx.send("I don't seem to know any jokes at the minute :tired_face:. Please try again later!")
+
+
 @bot.command(name="friend", brief="Befriend me", help="Ask about being my friend", aliases=["befriend"])
 async def friend(ctx):
     print(f"*****\nCommand: friend\nCalled by: {ctx.author}")
@@ -228,6 +240,7 @@ async def instagram(ctx):
 
 @bot.event
 async def on_message(message):
+    # ctx = bot.get_context(message)
     channel = message.channel
     print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}")
 
@@ -277,7 +290,8 @@ async def on_message(message):
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        await bot.process_commands(ctx.message)
+        ctx.send(f"I don't understand that command. Trying typing `<@693216082567233667> help` to learn what I can do")
+        return
     raise error
 
 
