@@ -290,7 +290,7 @@ async def on_message(message):
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        ctx.send(f"I don't understand that command. Trying typing `<@693216082567233667> help` to learn what I can do")
+        await ctx.send("I don't understand that command. Type `<@693216082567233667> help` to learn what I can do")
         return
     raise error
 
