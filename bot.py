@@ -287,7 +287,7 @@ async def on_message(message):
                 try:
                     await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
                 except discord.errors.HTTPException:
-                    await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
+                    await message.add_reaction(u"\U0001F929")  # back-up, if not on the SSAGO server
 
         elif re.match("^<@[&!]?693216082567233667>$", message.content) is not None:
             await channel.send("Wey aye, aareet, that's wor!")
