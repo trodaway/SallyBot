@@ -283,6 +283,7 @@ async def on_message(message):
                     await channel.send(":shushing_face:")
 
             else:  # any of Leo's messages that aren't roars
+                print("Trigger: add a reaction")
                 try:
                     await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
                 except discord.errors.HTTPException:
