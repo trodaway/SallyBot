@@ -3,6 +3,7 @@ import random
 import json
 import discord
 from discord.ext import commands
+from discord.utils import get
 import dotenv
 import re
 import giphy_client
@@ -256,6 +257,8 @@ async def on_message(message):
     channel = message.channel
     print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}")
 
+    await bot.process_commands(message)
+
     # stops it replying to itself
     if (message.author == bot.user) or (message.content == ""):
         print("Trigger: It's me!")
@@ -285,7 +288,8 @@ async def on_message(message):
             else:  # any of Leo's messages that aren't roars
                 print("Trigger: add a reaction")
                 try:
-                    await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
+                    sally_emoji = get(bot.emojis(), id="689616621576257557")
+                    await message.add_reaction(sally_emoji)  # only works on SSAGO server
                 except discord.errors.HTTPException:
                     await message.add_reaction(u"\U0001F929")  # back-up, if not on the SSAGO server
 
@@ -300,8 +304,6 @@ async def on_message(message):
                 if translated_text is not None and not (translated_text == message.content or
                                                         translated_text.rstrip(".") == message.content):
                     await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
-
-        await bot.process_commands(message)
 
 
 @bot.event
