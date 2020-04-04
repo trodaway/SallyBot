@@ -23,7 +23,7 @@ GIPHY_TOKEN = os.getenv("GIPHY_TOKEN")
 INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 
-#  Sets how often the translator occurs, defaulting to 10
+# Sets how often the translator occurs, defaulting to 10
 try:
     with open("data/translation_frequency.txt", "r") as freq_file:
         translator_frequency = int(freq_file.readline())
@@ -285,6 +285,9 @@ async def on_message(message):
             else:
                 print("Response: shush")
                 await channel.send(":shushing_face:")
+
+        elif re.match("^<@[&!]?693216082567233667>$", message.content) is not None:
+            await channel.send("Wey aye, aareet, that's wor!")
 
         # translates every 'x' to geordie
         elif translator_frequency != 0:  # set it to 0 to stop it from translating
