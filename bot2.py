@@ -22,7 +22,15 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GIPHY_TOKEN = os.getenv("GIPHY_TOKEN")
 INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
-translator_frequency = 1
+
+#  Sets how often the translator occurs, defaulting to 10
+try:
+    with open("data/translation_frequency", "r") as freq_file:
+        translator_frequency = int(freq_file.readline())
+except FileNotFoundError:
+    with open("data/translation_frequency", "w") as freq_file:
+        freq_file.write("15")
+    translator_frequency = 15
 
 
 # USEFUL FUNCTIONS
@@ -201,11 +209,13 @@ async def steal(ctx):
         await ctx.send("Better luck next time, I swam away")
 
 
-@bot.command(name="frequency", hidden=True, brief="Change how often I translate",
+@bot.command(name="frequency", hidden=False, brief="Change how often I translate",
              help="Set the frequency of my translations. Set me to 0 to stop")
 async def frequency(ctx, arg):
     global translator_frequency
     translator_frequency = int(arg)
+    with open("data/translation_frequency.txt", "w") as freq:
+        freq.write(str(translator_frequency))
     print(f"***** Translator frequency set to: {translator_frequency} *****")
     if translator_frequency == 0:
         await ctx.send("I'll stop translating")
