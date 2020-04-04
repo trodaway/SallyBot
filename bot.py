@@ -264,7 +264,7 @@ async def on_message(message):
 
     await bot.process_commands(message)  # runs commands first
 
-    ctx = bot.get_context(message)
+    ctx = await bot.get_context(message)
 
     # reacts to all of Leo's messages
     if message.author.id == 689751502700675072:
@@ -306,7 +306,8 @@ async def on_message(message):
                                                     translated_text.rstrip(".") == message.content):
                 await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
-    elif re.match("^<@[&!]?693216082567233667> (?i)(instagram|insta)[[:punct:]]?$", message.content) is not None:
+    elif re.match("^<@[&!]?693216082567233667> (?i)(instagram[[:punct:]]|insta[[:punct:]]?)$", message.content) is not \
+            None:
         await instagram(ctx)
 
 
