@@ -97,7 +97,8 @@ async def git(ctx):
 async def rally(ctx):
     print(f"*****\nCommand: rally\nCalled by: {ctx.author}")
     await ctx.send("My friends from NUSSAGG and DUSAGG are hosting Viking Rally in November 2021! Please come join us "
-                   "for a weekend of great fun in the Toon and surrounding areas. Its a canny place to be!")
+                   "for a weekend of great fun in the Toon and surrounding areas. Its a canny place to be! Find out "
+                   "more about SSAGO's raid of the North East on the [SSAGO Website](https://viking-rally.ssago.org/)")
 
 
 @bot.command(name="credits", brief="My credits", help="Find out who makes me work (or not work!)")
@@ -262,29 +263,30 @@ async def on_message(message):
         
     else:
         # reacts to all of Leo's messages
-        # if message.author.id == 689751502700675072:
-        #     print("Trigger: It's Leo!")
-        #     with channel.typing():
-        #         try:
-        #             await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
-        #         except discord.errors.HTTPException:
-        #             await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
-    
-        # responds to Leo's Roars
-        if message.author.id == 689751502700675072 and re.match("^Ro+a+r$", message.content) is not None:
-            print("Trigger: Leo Roared")
-            choice = random.choice(range(3))
-            if choice == 0:
-                print("Response: argh")
-                count = message.content.count("o")
-                await channel.send(f"{'a' * count + 'r' * int(count/2) + 'g' * int(count/2) + 'h' * int(count/2)}")
-            elif choice == 1:
-                with channel.typing():
-                    print("Response: scream")
-                    await channel.send(gif_response("scream"))
-            else:
-                print("Response: shush")
-                await channel.send(":shushing_face:")
+        if message.author.id == 689751502700675072:
+            print("Trigger: It's Leo!")
+
+            if re.match("^Ro+a+r$", message.content) is not None:  # reacts to Leo's roars
+                print("Trigger: Leo Roared")
+                choice = random.choice(range(3))
+                if choice == 0:
+                    print("Response: argh")
+                    count = message.content.count("o")
+                    await channel.send(
+                        f"{'a' * count + 'r' * int(count / 2) + 'g' * int(count / 2) + 'h' * int(count / 2)}")
+                elif choice == 1:
+                    with channel.typing():
+                        print("Response: scream")
+                        await channel.send(gif_response("scream"))
+                else:
+                    print("Response: shush")
+                    await channel.send(":shushing_face:")
+
+            else:  # any of Leo's messages that aren't roars
+                try:
+                    await message.add_reaction("<:Sally:689616621576257557>")  # only works on SSAGO server
+                except discord.errors.HTTPException:
+                    await message.add_reaction(":star_struck:")  # back-up, if not on the SSAGO server
 
         elif re.match("^<@[&!]?693216082567233667>$", message.content) is not None:
             await channel.send("Wey aye, aareet, that's wor!")
