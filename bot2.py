@@ -25,10 +25,10 @@ INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 #  Sets how often the translator occurs, defaulting to 10
 try:
-    with open("data/translation_frequency", "r") as freq_file:
+    with open("data/translation_frequency.txt", "r") as freq_file:
         translator_frequency = int(freq_file.readline())
 except FileNotFoundError:
-    with open("data/translation_frequency", "w") as freq_file:
+    with open("data/translation_frequency.txt", "w") as freq_file:
         freq_file.write("15")
     translator_frequency = 15
 print(f"Translation Frequency set to {translator_frequency}")
