@@ -31,6 +31,7 @@ except FileNotFoundError:
     with open("data/translation_frequency", "w") as freq_file:
         freq_file.write("15")
     translator_frequency = 15
+print(f"Translation Frequency set to {translator_frequency}")
 
 
 # USEFUL FUNCTIONS
