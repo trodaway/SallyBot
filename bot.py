@@ -283,6 +283,7 @@ async def on_message(message):
     # stops it replying to itself
     if (message.author == bot.user) or (message.content == ""):
         print("Trigger: It's me!")
+        return
 
     # reacts to all of Leo's messages
     else:
@@ -325,10 +326,11 @@ async def on_message(message):
                                                         translated_text.rstrip(".") == message.content):
                     await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
-        elif re.match("^<@[&!]?693216082567233667> (?i)(instagram[!.?]|insta[!.?]?|nussaggsallyandleo)$",
-                      message.content) is not None:
-            print("*****\nInsta")
-            await instagram(ctx)
+    print("Pre-regex")
+    if re.match("^<@[&!]?693216082567233667> (?i)(instagram[!.?]|insta[!.?]?|nussaggsallyandleo)$", message.content) is\
+            not None:
+        print("*****\nInsta")
+        await instagram(ctx)
 
     await bot.process_commands(message)  # runs commands first
 
