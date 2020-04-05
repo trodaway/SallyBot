@@ -73,7 +73,7 @@ async def status():
         with open("data/activities.json", "r") as activities_file:
             activities = json.load(activities_file)
             single_activity = activities[str(random.choice(range(len(activities))))]
-            if single_activity["type"] == "Watching":
+            if single_activity["type"] == "watching":
                 activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.watching)
             elif single_activity["type"] == "listening":
                 activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.listening)
