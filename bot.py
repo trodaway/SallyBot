@@ -12,6 +12,7 @@ import requests
 import instaloader
 from bs4 import BeautifulSoup
 import urllib.parse
+import asyncio
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.isfile("data/friends.txt"):
@@ -67,13 +68,29 @@ def translator(text_to_translate, dialect="geordie"):
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("?Sally"), case_insensitive=True)
 
 
+async def status():
+    while True:
+        with open("data/activities.json", "r") as activities_file:
+            activities = json.load(activities_file)
+            single_activity = activities[str(random.choice(range(len(activities))))]
+            if single_activity["type"] == "Watching":
+                activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.watching)
+            elif single_activity["type"] == "listening":
+                activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.listening)
+            elif single_activity["type"] == "playing":
+                activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.playing)
+            else:
+                activity = discord.Activity(name="The Sea", type=discord.ActivityType.watching)
+            await bot.change_presence(activity=activity)
+            print(f"*****\nStatus Changed\nType: {single_activity['type']}\nName: {single_activity['name']}")
+        await asyncio.sleep(10)
+
+
 @bot.event
 async def on_ready():
     print("I'm connected and ready to go!")
 
-    # set custom status for bot
-    activity = discord.Activity(name="Sounds of the Sea", type=discord.ActivityType.listening)
-    await bot.change_presence(activity=activity)
+    bot.loop.create_task(status())  # sets custom statuses for the bot
 
 
 @bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
