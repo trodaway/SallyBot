@@ -283,9 +283,6 @@ async def on_message(message):
     # stops it replying to itself
     if (message.author == bot.user) or (message.content == ""):
         print("Trigger: It's me!")
-        await bot.process_commands(message)
-
-
 
     # reacts to all of Leo's messages
     else:
@@ -330,10 +327,10 @@ async def on_message(message):
 
         elif re.match("^<@[&!]?693216082567233667> (?i)(instagram[!.?]|insta[!.?]?|nussaggsallyandleo)$",
                       message.content) is not None:
+            print("*****\nInsta")
             await instagram(ctx)
 
-        else:
-            await bot.process_commands(message)  # runs commands first
+    await bot.process_commands(message)  # runs commands first
 
 
 @bot.event
