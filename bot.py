@@ -71,6 +71,10 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or("?Sally"), case_ins
 async def on_ready():
     print("I'm connected and ready to go!")
 
+    # set custom status for bot
+    activity = discord.Activity(name="Sounds of the Sea", type=discord.ActivityType.listening)
+    await bot.change_presence(activity=activity)
+
 
 @bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
              aliases=["hello", "hey"])
@@ -306,8 +310,8 @@ async def on_message(message):
                                                     translated_text.rstrip(".") == message.content):
                 await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
-    elif re.match("^<@[&!]?693216082567233667> (?i)(instagram[[:punct:]]|insta[[:punct:]]?)$", message.content) is not \
-            None:
+    elif re.match("^<@[&!]?693216082567233667> (?i)(instagram[!.?]|insta[!.?]?|nussaggsallyandleo)$", message.content) \
+            is not None:
         await instagram(ctx)
 
 
