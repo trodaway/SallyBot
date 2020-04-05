@@ -276,60 +276,64 @@ async def instagram(ctx):
 async def on_message(message):
     # ctx = bot.get_context(message)
     channel = message.channel
-    print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}")
+    print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}\nChannel: "
+          f"{channel.name}")
+    ctx = await bot.get_context(message)
 
     # stops it replying to itself
     if (message.author == bot.user) or (message.content == ""):
         print("Trigger: It's me!")
         await bot.process_commands(message)
 
-    await bot.process_commands(message)  # runs commands first
 
-    ctx = await bot.get_context(message)
 
     # reacts to all of Leo's messages
-    if message.author.id == 689751502700675072:
-        print("Trigger: It's Leo!")
+    else:
+        if message.author.id == 689751502700675072:
+            print("Trigger: It's Leo!")
 
-        if re.match("^Ro+a+r$", message.content) is not None:  # reacts to Leo's roars
-            print("Trigger: Leo Roared")
-            choice = random.choice(range(3))
-            if choice == 0:
-                print("Response: argh")
-                count = message.content.count("o")
-                await channel.send(
-                    f"{'a' * count + 'r' * int(count / 2) + 'g' * int(count / 2) + 'h' * int(count / 2)}")
-            elif choice == 1:
-                with channel.typing():
-                    print("Response: scream")
-                    await channel.send(gif_response("scream"))
-            else:
-                print("Response: shush")
-                await channel.send(":shushing_face:")
+            if re.match("^Ro+a+r$", message.content) is not None:  # reacts to Leo's roars
+                print("Trigger: Leo Roared")
+                choice = random.choice(range(3))
+                if choice == 0:
+                    print("Response: argh")
+                    count = message.content.count("o")
+                    await channel.send(
+                        f"{'a' * count + 'r' * int(count / 2) + 'g' * int(count / 2) + 'h' * int(count / 2)}")
+                elif choice == 1:
+                    with channel.typing():
+                        print("Response: scream")
+                        await channel.send(gif_response("scream"))
+                else:
+                    print("Response: shush")
+                    await channel.send(":shushing_face:")
 
-        else:  # any of Leo's messages that aren't roars
-            print("Trigger: add a reaction")
-            try:
-                sally_emoji = get(bot.emojis(), id="689616621576257557")
-                await message.add_reaction(sally_emoji)  # only works on SSAGO server
-            except discord.errors.HTTPException:
-                await message.add_reaction(u"\U0001F929")  # back-up, if not on the SSAGO server
+            else:  # any of Leo's messages that aren't roars
+                print("Trigger: add a reaction")
+                try:
+                    sally_emoji = get(bot.emojis(), id="689616621576257557")
+                    await message.add_reaction(sally_emoji)  # only works on SSAGO server
+                except discord.errors.HTTPException:
+                    await message.add_reaction(u"\U0001F929")  # back-up, if not on the SSAGO server
 
-    elif re.match("^<@[&!]?693216082567233667>$", message.content) is not None:
-        await channel.send("Wey aye, aareet, that's wor!")
+        elif re.match("^<@[&!]?693216082567233667>$", message.content) is not None:
+            await channel.send("Wey aye, aareet, that's wor!")
 
-    # translates every 'x' to geordie
-    elif translator_frequency != 0:  # set it to 0 to stop it from translating
-        if random.randrange(translator_frequency) == 0 and \
-                re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
-            translated_text = translator(message.content)
-            if translated_text is not None and not (translated_text == message.content or
-                                                    translated_text.rstrip(".") == message.content):
-                await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
+        # translates every 'x' to geordie
+        elif translator_frequency != 0:  # set it to 0 to stop it from translating
+            if random.randrange(translator_frequency) == 0 and \
+                    re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
+                translated_text = translator(message.content)
+                if translated_text is not None and not (translated_text == message.content or
+                                                        translated_text.rstrip(".") == message.content):
+                    await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
-    elif re.match("^<@[&!]?693216082567233667> (?i)(instagram[!.?]|insta[!.?]?|nussaggsallyandleo)$", message.content) \
-            is not None:
-        await instagram(ctx)
+        elif re.match("^<@[&!]?693216082567233667> (?i)(instagram[!.?]|insta[!.?]?|nussaggsallyandleo)$",
+                      message.content) is not None:
+            await instagram(ctx)
+
+        else:
+            await bot.process_commands(message)  # runs commands first
 
 
 @bot.event
