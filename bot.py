@@ -457,9 +457,14 @@ async def on_message(message):
         print("Regex - Help")
         await _help(ctx)
 
+    elif re.match(r"(?i)^<@[&!]?693216082567233667>$", message.content) is not None:
+        await ctx.send(f"Hi {ctx.author.mention}! Type `@Sally the Seahorse help` to learn what I can do")
+
+    elif re.match(r"(?i)^<@[&!]?693216082567233667>", message.content) is not None:
+        await ctx.send(f"Sorry {ctx.author.mention}, I don't understand that command. Type `@Sally the Seahorse help` "
+                       f"to learn what I can do")
+
     else:
-        print("*****\nElse")
-        await ctx.send("I don't understand that command. Type `@Sally the Seahorse help` to learn what I can do")
         return
 
 
