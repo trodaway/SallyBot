@@ -82,7 +82,7 @@ async def status():
             else:
                 activity = discord.Activity(name="The Sea", type=discord.ActivityType.watching)
             await bot.change_presence(activity=activity)
-            print(f"*****\nStatus Changed\nType: {single_activity['type']}\nName: {single_activity['name']}")
+            # print(f"*****\nStatus Changed\nType: {single_activity['type']}\nName: {single_activity['name']}")
         await asyncio.sleep(10)
 
 
