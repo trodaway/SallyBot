@@ -295,8 +295,8 @@ bot.remove_command("help")
 
 @bot.command(name="help")
 async def _help(ctx):
-    print(f"*****\nCommand: _help\nCalled by: {ctx.author}")
-    embed = discord.Embed(title="Sally the Seahore", url="https://github.com/trodaway/SallyBot",
+    print(f"*****\nCommand: help\nCalled by: {ctx.author}")
+    embed = discord.Embed(title="Sally the Seahorse", url="https://github.com/trodaway/SallyBot",
                           description="Call me with `@Sally the Seahorse`", color=0x4fafe4)
     embed.set_thumbnail(url="https://ssago.org/img/clubs/logos/44.png")
     embed.add_field(name="Hi", value="Say hi to me and I'll say hi back", inline=False)
@@ -452,6 +452,11 @@ async def on_message(message):
         print("*****\nRegex - Geordie")
         await geordie(ctx)
 
+    # Help
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> help[!.?]?$", message.content) is not None:
+        print("*****\nRegex - Help")
+        await _help(ctx)
+
     else:
         await bot.process_commands(message)  # runs commands first
 
@@ -467,7 +472,6 @@ async def on_command_error(ctx, error):
 @bot.event
 async def on_ready():
     print("I'm connected and ready to go!")
-
     bot.loop.create_task(status())  # sets custom statuses for the bot
 
 
