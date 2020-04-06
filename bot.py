@@ -216,7 +216,8 @@ async def steal(ctx):
             line = friends_file.readline()
             multiple_friends = line.split(",")
             for single_friend in multiple_friends:
-                friend_list.append(single_friend)
+                if single_friend != '':
+                    friend_list.append(int(single_friend))
         # if a NUSSAGG member tries to steal
         if 692795798416523356 in [role.id for role in ctx.author.roles]:
             await ctx.send(f"{ctx.author.mention} you can't steal me, you're part of my club")
