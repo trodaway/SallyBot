@@ -290,6 +290,9 @@ async def geordie(ctx):
         await ctx.send("I don't seem to know any famous Geordies at the minute :tired_face:. Please try again later!")
 
 
+bot.remove_command("help")
+
+
 @bot.command(name="help")
 async def _help(ctx):
     print(f"*****\nCommand: _help\nCalled by: {ctx.author}")
