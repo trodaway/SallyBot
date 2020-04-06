@@ -281,13 +281,41 @@ async def geordie(ctx):
             geordies = json.load(geordie_file)
             single_geordie = geordies[str(random.choice(range(len(geordies))))]
             embed = discord.Embed(title=single_geordie["name"], url=single_geordie["wiki"],
-                                  description=single_geordie["honours"])
+                                  description=single_geordie["honours"], color=0x4fafe4)
             embed.set_thumbnail(url=single_geordie["image"])
             embed.add_field(name="Connection to Newcastle", value=single_geordie["connection"], inline=False)
             embed.add_field(name="Famous for?", value=single_geordie["fame"], inline=False)
             await ctx.send(embed=embed)
     except FileNotFoundError:
         await ctx.send("I don't seem to know any famous Geordies at the minute :tired_face:. Please try again later!")
+
+
+@bot.command(name="help")
+async def _help(ctx):
+    print(f"*****\nCommand: _help\nCalled by: {ctx.author}")
+    embed = discord.Embed(title="Sally the Seahore", url="https://github.com/trodaway/SallyBot",
+                          description="Call me with `@Sally the Seahorse`", color=0x4fafe4)
+    embed.set_thumbnail(url="https://ssago.org/img/clubs/logos/44.png")
+    embed.add_field(name="Hi", value="Say hi to me and I'll say hi back", inline=False)
+    embed.add_field(name="Leo", value="I'll talk about my best friend, Leo the Lion", inline=False)
+    embed.add_field(name="Git", value="Get a link to the Github repository which contains all of my brains",
+                    inline=False)
+    embed.add_field(name="Rally", value="Yay, I get to talk about Viking Rally!", inline=False)
+    embed.add_field(name="Credits", value="Find out who contributed to my creation", inline=False)
+    embed.add_field(name="Fact", value="I've got lots of seahorse facts that I'd love to share", inline=False)
+    embed.add_field(name="Joke", value="Get ready for a laugh as I tell you a seahorse joke", inline=False)
+    embed.add_field(name="Friend", value="Ask about being my friend - I'm very friendly", inline=False)
+    embed.add_field(name="Friends", value="Find out who I'm friends with", inline=False)
+    embed.add_field(name="Steal", value="You could try to steal me, though it may not end well for you", inline=False)
+    embed.add_field(name="Frequency <x>",
+                    value="Set the frequency of my translator, so that I only have a 1 in x chance of translating. If I"
+                          " really annoy you, feel free to stop me all together with 0.", inline=False)
+    embed.add_field(name="Instagram", value="Get a link to mine and Leo's insta - you'll even get a sneak peak out our "
+                                            "latest adventures!", inline=False)
+    embed.add_field(name="Geordie", value="Learn more about one of the many famous Geordies!", inline=False)
+    embed.add_field(name="Help", value="Access this help menu", inline=False)
+    embed.set_footer(text="Any problems, please contact <@689579955012632586>")
+    await ctx.send(embed=embed)
 
 
 @bot.event
@@ -340,8 +368,8 @@ async def on_message(message):
             if random.randrange(translator_frequency) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
                 translated_text = translator(message.content)
-                if translated_text is not None and not (translated_text == message.content or
-                                                        translated_text.rstrip(".") == message.content):
+                if translated_text is not None and not (translated_text.lower() == message.content.lower() or
+                                                        translated_text.rstrip(".").lower() == message.content.lower()):
                     await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
     print("Pre-regex")
