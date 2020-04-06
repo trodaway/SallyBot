@@ -458,7 +458,7 @@ async def on_message(message):
 
     elif re.match(r"(?i)^<@[&!]?693216082567233667>$", message.content) is not None:
         await ctx.send(f"Wye aye {ctx.author.mention}! Type `@Sally the Seahorse help` tuh learn warra gan dee.\nOr, in"
-                       f"plain english:\n>>> Hi {ctx.author.mention}! Type `@Sally the Seahorse help` to learn what "
+                       f" plain english:\n>>> Hi {ctx.author.mention}! Type `@Sally the Seahorse help` to learn what "
                        f"I can do.")
 
     elif re.match(r"(?i)^<@[&!]?693216082567233667>.*$", message.content) is not None:
