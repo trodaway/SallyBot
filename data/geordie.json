@@ -1,1 +1,34 @@
-{"yes": "Aye", "no": "Nee", "our": "Wor", "going": "Gan", "you": "Yee", "down": "Doon", "night": "Neet", "over": "Owa", "right": "Reet", "nothing": "Nowt", "wrong": "Wrang", "long": "Lang", "pick": "Howk", "scratch": "Howk", "don't": "Divvent", "town": "Toon", "newcastle united": "Toon", "great": "Geet", "along": "Alang", "chav": "Radgie", "mad": "Radge", "beautiful": "Bonny", "old man": "Gadgie", "child": "Bairn", "dinner": "Bait", "packed lunch": "Bait", "female": "Hinny", "home": "yem", "house": "Hoose", "good": "Canny", "significant": "Propa", "really good": "Belta", "mouth": "Gob", "cigarette": "Snout", "idiot": "Doylem", "drunk": "Mortal", "head": "Nappa", "tired": "Knackered", "boy": "Laddie", "girl": "Lassie", "smoking": "Smerking", "disbelief": "Haddaway", "hungry": "Clamming", "look": "Deek", "nosey": "Nebby", "dead": "Deed", "he was really angry": "oo he was gan propa radge", "she's very good looking": "She's geet lush", "calm down": "Calm doon", "a nosey person": "A right nebby bugga", "it was only ten pound": "was anly ten pund", "he's a really nice person": "He's geet canny as oot", "are you stupid": "Are yee daft", "do as your told": "Dee as ya telt", "hello": "Areet bonny lad", "my mam said": "Me ma said", "arguing with someone": "Shooting and bawling", "i'm going to newcastle city centre": "am gan to the toon", "i'm really tired": "I'm propa paggered", "i love you": "a luv yee pet", "thanks": "Cheers pet", "my girlfriend": "Wor lass", "my boyfriend": "Wor lad", "i'm going home": "Am gan hyem", "come on!": "Howay man", "hungry for my food.": "Clamming for me bait", "can i have a cigarette": "Giz a snout mate", "he's looking at me funny": "Here man, he's giving is hackies", "shy children get nothing": "Shy bairns get nowt", "don't get me wrong": "Divvent get is wrang pet", "hi": "Areet wor kid?", "let me have a look at that": "Giz a deek at that", "all right":  "areet"}
+{
+  "0": {
+    "name": "Ant & Dec",
+    "honours": "OBE",
+    "connection": "Both born in Newcastle in 1975",
+    "fame": "This duo made their names in Byker Grove, playing PJ & Duncan. They're now very successful TV presenters!",
+    "image": "https://tv.bt.com/images/ant-and-dec-136425349549102601-180223130740.jpg",
+    "wiki": "https://en.wikipedia.org/wiki/Ant_%26_Dec"
+  },
+  "1": {
+    "name": "Rowan Atkinson",
+    "honours": "CBE",
+    "connection": "He was born in Newcastle in 1955, and studied Electrical Engineering at Newcastle University",
+    "fame": "Actor & comedian, know for Mr Bean, Blackadder, and Johnny English.",
+    "image": "https://m.media-amazon.com/images/M/MV5BMTg3NDUzOTc3MV5BMl5BanBnXkFtZTcwNjcxMDkxNw@@._V1_.jpg",
+    "wiki": "https://en.wikipedia.org/wiki/Rowan_Atkinson"
+  },
+  "2": {
+    "name": "Cheryl",
+    "honours": "",
+    "connection": "Born in Newcastle in 1983, she grown up in Walker",
+    "fame": "Coming to fame through Girls Aloud, she's gone on to have a very successful solo career. You may have also seen her when she's appeared as a judge on The X Factor over the years.",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/0/01/Cheryl_Cole_Cannes_2014.jpg",
+    "wiki": "https://en.wikipedia.org/wiki/Cheryl_(singer)"
+  },
+  "3": {
+    "name": "Alan Shearer",
+    "honours": "CBE",
+    "connection": "Born in Gosforth, Newcastle, in 1970.",
+    "fame": "First and foremost a footballer but also a manager and TV pundit. NUFC paid £15mil for him in 1996, making him the world's most expensive footballer at the time",
+    "image": "https://www.gstatic.com/tv/thumb/persons/255470/255470_v9_ba.jpg",
+    "wiki": "https://en.wikipedia.org/wiki/Alan_Shearer"
+  }
+}

@@ -272,6 +272,24 @@ async def instagram(ctx):
     os.remove(image_path)
 
 
+@bot.command(name="geordie", brief="Learn about some famous Geordies",
+             help="I'll help teach you about some famous Geordies.")
+async def geordie(ctx):
+    print(f"*****\nCommand: geordie\nCalled by: {ctx.author}")
+    try:
+        with open("data/geordie.json", "r") as geordie_file:
+            geordies = json.load(geordie_file)
+            single_geordie = geordies[str(random.choice(range(len(geordies))))]
+            embed = discord.Embed(title=single_geordie["name"], url=single_geordie["wiki"],
+                                  description=single_geordie["honours"])
+            embed.set_thumbnail(url=single_geordie["image"])
+            embed.add_field(name="Connection to Newcastle", value=single_geordie["connection"], inline=False)
+            embed.add_field(name="Famous for?", value=single_geordie["fame"], inline=False)
+            await ctx.send(embed=embed)
+    except FileNotFoundError:
+        await ctx.send("I don't seem to know any famous Geordies at the minute :tired_face:. Please try again later!")
+
+
 @bot.event
 async def on_message(message):
     # ctx = bot.get_context(message)
@@ -381,13 +399,13 @@ async def on_message(message):
 
     # Steal
     elif re.match(r"(?i)^<@[&!]?693216082567233667> steal[!.?]?$", message.content) is not None:
-        print("*****\nRegex - Friends")
+        print("*****\nRegex - Steal")
         await steal(ctx)
 
     # Frequency
     elif re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
                   message.content) is not None:
-        print("*****\nRegex - Friends")
+        print("*****\nRegex - Frequency")
         value = re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
                          message.content).string.split()[-1].replace("!", "").rstrip("!?.")
         await frequency(ctx, value)
@@ -397,6 +415,11 @@ async def on_message(message):
             not None:
         print("*****\nRegex - Insta")
         await instagram(ctx)
+
+    # Geordie
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (famous )?geordie[!.?]?$", message.content) is not None:
+        print("*****\nRegex - Geordie")
+        await geordie(ctx)
 
     else:
         await bot.process_commands(message)  # runs commands first
