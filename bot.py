@@ -329,71 +329,71 @@ async def on_message(message):
     print("Pre-regex")
 
     # Hi
-    if re.match(r"^<@[&!]?693216082567233667> (?i)(hi|hello|hey|wye aye|aareet|alreet)[!.?]?$", message.content) is \
+    if re.match(r"(?i)^<@[&!]?693216082567233667> (hi|hello|hey|wye aye|aareet|alreet)[!.?]?$", message.content) is \
             not None:
         print("*****\nRegex- Hi")
         await hi(ctx)
 
     # Leo
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)(<@[&!]?689751502700675072>|leo (the)? lion)[!.?]?$",
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (<@[&!]?689751502700675072>|leo (the)? lion)[!.?]?$",
                   message.content) is not None:
         print("*****\nRegex- Leo")
         await leo(ctx)
 
     # Git
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)(git(hub)?|brains?)[!.?]?$", message.content) is not None:
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (git(hub)?|brains?)[!.?]?$", message.content) is not None:
         print("*****\nRegex - Git")
         await git(ctx)
 
     # Rally
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)((viking|autumn|ssago) )?rally[!.?]?$", message.content) is not \
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((viking|autumn|ssago) )?rally[!.?]?$", message.content) is not \
             None:
         print("*****\nRegex - Rally")
         await rally(ctx)
 
     # Credits
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)(cred(it)?s?|contrib(utor)?s?)[!.?]?$", message.content) is not \
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (cred(it)?s?|contrib(utor)?s?)[!.?]?$", message.content) is not \
             None:
         print("*****\nRegex - Credits")
         await _credits(ctx)
 
     # Facts
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)((sea[ -]?horse) )?facts?[!.?]?$", message.content) is not None:
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((sea[ -]?horse) )?facts?[!.?]?$", message.content) is not None:
         print("*****\nRegex - Facts")
         await fact(ctx)
 
     # Jokes
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)((sea[ -]?horse) )?jokes?[!.?]?$", message.content) is not None:
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((sea[ -]?horse) )?jokes?[!.?]?$", message.content) is not None:
         print("*****\nRegex - Jokes")
         await joke(ctx)
 
     # Friend
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)(friend|befriend|(((let('s| us) be)|can we be|((do )?(yo)?u )?want "
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (friend|befriend|(((let('s| us) be)|can we be|((do )?(yo)?u )?want "
                   "to be) friends?))[.!?]?$", message.content) is not None:
         print("*****\nRegex - Friend")
         await friend(ctx)
 
     # Friends
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)((who are your )?friends|friends?[ -]?list|who are you friends "
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((who are your )?friends|friends?[ -]?list|who are you friends "
                   r"with)[!.?]?$", message.content) is not None:
         print("*****\nRegex - Friends")
         await friends(ctx)
 
     # Steal
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)steal[!.?]?$", message.content) is not None:
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> steal[!.?]?$", message.content) is not None:
         print("*****\nRegex - Friends")
         await steal(ctx)
 
     # Frequency
-    elif re.match(r"^<@[&!]?693216082567233667> (?i)((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
                   message.content) is not None:
         print("*****\nRegex - Friends")
-        value = re.match(r"^<@[&!]?693216082567233667> (?i)((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
+        value = re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
                          message.content).string.split()[-1].replace("!", "").rstrip("!?.")
         await frequency(ctx, value)
 
     # Instagram
-    elif re.match("^<@[&!]?693216082567233667> (?i)(instagram|insta|nussaggsallyandleo)[!.?]?$", message.content) is \
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (instagram|insta|nussaggsallyandleo)[!.?]?$", message.content) is \
             not None:
         print("*****\nRegex - Insta")
         await instagram(ctx)
