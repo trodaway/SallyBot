@@ -183,7 +183,8 @@ async def friends(ctx):
             line = friends_file.readline()
             multiple_friends = line.split(",")
             for single_friend in multiple_friends:
-                friend_list.append(single_friend)
+                if single_friend != '':
+                    friend_list.append(single_friend)
         print(friend_list)
         if len(friend_list) == 0:
             await ctx.send(f"Unfortunately I don't have any friends at the moment. {ctx.author.mention}, perhaps you "
