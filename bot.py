@@ -317,7 +317,7 @@ async def _help(ctx):
                                             "latest adventures!", inline=False)
     embed.add_field(name="Geordie", value="Learn more about one of the many famous Geordies!", inline=False)
     embed.add_field(name="Help", value="Access this help menu", inline=False)
-    embed.set_footer(text="Any problems, please contact <@689579955012632586>")
+    embed.set_footer(text="Any problems, please contact Tim Rodaway")
     await ctx.send(embed=embed)
 
 
