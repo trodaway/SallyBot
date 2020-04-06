@@ -287,7 +287,9 @@ async def geordie(ctx):
             embed.add_field(name="Famous for?", value=single_geordie["fame"], inline=False)
             await ctx.send(embed=embed)
     except FileNotFoundError:
-        await ctx.send("I don't seem to know any famous Geordies at the minute :tired_face:. Please try again later!")
+        await ctx.send("Ah divvint seem tuh knar any famous geordies at the minute :tired_face:. please try agyen "
+                       "lator!\nOr, in plain English:\n>>> I don't seem to know any famous Geordies at the minute "
+                       ":tired_face:. Please try again later!")
 
 
 bot.remove_command("help")
@@ -362,9 +364,6 @@ async def on_message(message):
                     await message.add_reaction(sally_emoji)  # only works on SSAGO server
                 except discord.errors.HTTPException:
                     await message.add_reaction(u"\U0001F929")  # back-up, if not on the SSAGO server
-
-        elif re.match("^<@[&!]?693216082567233667>$", message.content) is not None:
-            await channel.send("Wey aye, aareet, that's wor!")
 
         # translates every 'x' to geordie
         elif translator_frequency != 0:  # set it to 0 to stop it from translating
@@ -458,11 +457,14 @@ async def on_message(message):
         await _help(ctx)
 
     elif re.match(r"(?i)^<@[&!]?693216082567233667>$", message.content) is not None:
-        await ctx.send(f"Hi {ctx.author.mention}! Type `@Sally the Seahorse help` to learn what I can do")
+        await ctx.send(f"Wye aye {ctx.author.mention}! Type `@Sally the Seahorse help` tuh learn warra gan dee.\nOr, in"
+                       f"plain english:\n>>> Hi {ctx.author.mention}! Type `@Sally the Seahorse help` to learn what "
+                       f"I can do.")
 
-    elif re.match(r"(?i)^<@[&!]?693216082567233667>", message.content) is not None:
-        await ctx.send(f"Sorry {ctx.author.mention}, I don't understand that command. Type `@Sally the Seahorse help` "
-                       f"to learn what I can do")
+    elif re.match(r"(?i)^<@[&!]?693216082567233667>.*$", message.content) is not None:
+        await ctx.send(f"Soz {ctx.author.mention}, ah divvint understand that command. Type `@Sally the Seahorse help` "
+                       f"tuh learn warra gan dee.\nOr, in plain english:\n>>> Sorry {ctx.author.mention}, I don't "
+                       f"understand that command. Type `@Sally the Seahorse help` to learn what I can do.")
 
     else:
         return
@@ -471,7 +473,9 @@ async def on_message(message):
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        await ctx.send("I don't understand that command. Type `@Sally the Seahorse help` to learn what I can do")
+        await ctx.send(f"Soz {ctx.author.mention}, ah divvint understand that command. Type `@Sally the Seahorse help` "
+                       f"tuh learn warra gan dee.\nOr, in plain english:\n>>> Sorry {ctx.author.mention}, I don't "
+                       f"understand that command. Type `@Sally the Seahorse help` to learn what I can do.")
         return
     raise error
 
