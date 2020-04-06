@@ -218,7 +218,7 @@ async def steal(ctx):
             for single_friend in multiple_friends:
                 friend_list.append(single_friend)
         # if a NUSSAGG member tries to steal
-        if ctx.author.roles.id == "692795798416523356":
+        if 692795798416523356 in [role.id for role in ctx.author.roles]:
             await ctx.send(f"{ctx.author.mention} you can't steal me, you're part of my club")
         # if a friend tries to steal, un-friend them
         elif ctx.author.id in friend_list:
