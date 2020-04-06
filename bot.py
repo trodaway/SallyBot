@@ -217,13 +217,13 @@ async def steal(ctx):
             multiple_friends = line.split(",")
             for single_friend in multiple_friends:
                 if single_friend != '':
-                    friend_list.append(int(single_friend))
+                    friend_list.append(single_friend)
         # if a NUSSAGG member tries to steal
         if 692795798416523356 in [role.id for role in ctx.author.roles]:
             await ctx.send(f"{ctx.author.mention} you can't steal me, you're part of my club")
         # if a friend tries to steal, un-friend them
-        elif ctx.author.id in friend_list:
-            friend_list.remove(ctx.author.id)
+        elif str(ctx.author.id) in friend_list:
+            friend_list.remove(str(ctx.author.id))
             with open("data/friend.txt", "w") as f:
                 f.write(",".join(friend_list))
             await ctx.send(f"{ctx.author.mention} you were meant to be my friend")
