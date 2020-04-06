@@ -188,8 +188,6 @@ async def friends(ctx):
         if len(friend_list) == 0:
             await ctx.send(f"Unfortunately I don't have any friends at the moment. {ctx.author.mention}, perhaps you "
                            f"could befriend me")
-        # else:
-        #     await ctx.send(f"My friends are:\n>>> {chr(10).join([f'<@{i}>' for i in friend_list if i is not ''])}")
         else:
             friend_list_names = []
             for i in friend_list:
@@ -224,7 +222,7 @@ async def steal(ctx):
         # if a friend tries to steal, un-friend them
         elif str(ctx.author.id) in friend_list:
             friend_list.remove(str(ctx.author.id))
-            with open("data/friend.txt", "w") as f:
+            with open("data/friends.txt", "w") as f:
                 f.write(",".join(friend_list))
             await ctx.send(f"{ctx.author.mention} you were meant to be my friend")
         # if someone else tries to steal, they fail
