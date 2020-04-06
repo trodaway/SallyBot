@@ -459,8 +459,8 @@ async def on_message(message):
 
     else:
         print("*****\nElse")
+        await ctx.send("I don't understand that command. Type `@Sally the Seahorse help` to learn what I can do")
         return
-        # await bot.process_commands(message)  # runs commands first
 
 
 @bot.event
