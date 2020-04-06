@@ -384,7 +384,7 @@ async def on_message(message):
         await hi(ctx)
 
     # Leo
-    elif re.match(r"(?i)^<@[&!]?693216082567233667> (<@[&!]?689751502700675072>|leo (the)? lion)[!.?]?$",
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (<@[&!]?689751502700675072>|leo ((the )?lion)?)[!.?]?$",
                   message.content) is not None:
         print("*****\nRegex- Leo")
         await leo(ctx)
