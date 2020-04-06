@@ -86,13 +86,6 @@ async def status():
         await asyncio.sleep(10)
 
 
-@bot.event
-async def on_ready():
-    print("I'm connected and ready to go!")
-
-    bot.loop.create_task(status())  # sets custom statuses for the bot
-
-
 @bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
              aliases=["hello", "hey"])
 async def hi(ctx):
@@ -195,8 +188,15 @@ async def friends(ctx):
         if len(friend_list) == 0:
             await ctx.send(f"Unfortunately I don't have any friends at the moment. {ctx.author.mention}, perhaps you "
                            f"could befriend me")
+        # else:
+        #     await ctx.send(f"My friends are:\n>>> {chr(10).join([f'<@{i}>' for i in friend_list if i is not ''])}")
         else:
-            await ctx.send(f"My friends are:\n>>> {chr(10).join([f'<@{i}>' for i in friend_list if i is not ''])}")
+            friend_list_names = []
+            for i in friend_list:
+                if i != '':
+                    name = bot.get_user(int(i)).name
+                    friend_list_names.append(name)
+            await ctx.send(f"My friends are:\n>>> {chr(10).join([i for i in friend_list_names])}")
     except FileNotFoundError:
         await ctx.send(f"My memory's a little fuzzy right now. Please try asking me again later!")
 
@@ -327,12 +327,79 @@ async def on_message(message):
                     await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
     print("Pre-regex")
-    if re.match("^<@[&!]?693216082567233667> (?i)(instagram[!.?]|insta[!.?]?|nussaggsallyandleo)$", message.content) is\
+
+    # Hi
+    if re.match(r"^<@[&!]?693216082567233667> (?i)(hi|hello|hey|wye aye|aareet|alreet)[!.?]?$", message.content) is \
             not None:
-        print("*****\nInsta")
+        print("*****\nRegex- Hi")
+        await hi(ctx)
+
+    # Leo
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)(<@[&!]?689751502700675072>|leo (the)? lion)[!.?]?$",
+                  message.content) is not None:
+        print("*****\nRegex- Leo")
+        await leo(ctx)
+
+    # Git
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)(git(hub)?|brains?)[!.?]?$", message.content) is not None:
+        print("*****\nRegex - Git")
+        await git(ctx)
+
+    # Rally
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)((viking|autumn|ssago) )?rally[!.?]?$", message.content) is not \
+            None:
+        print("*****\nRegex - Rally")
+        await rally(ctx)
+
+    # Credits
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)(cred(it)?s?|contrib(utor)?s?)[!.?]?$", message.content) is not \
+            None:
+        print("*****\nRegex - Credits")
+        await _credits(ctx)
+
+    # Facts
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)((sea[ -]?horse) )?facts?[!.?]?$", message.content) is not None:
+        print("*****\nRegex - Facts")
+        await fact(ctx)
+
+    # Jokes
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)((sea[ -]?horse) )?jokes?[!.?]?$", message.content) is not None:
+        print("*****\nRegex - Jokes")
+        await joke(ctx)
+
+    # Friend
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)(friend|befriend|(((let('s| us) be)|can we be|((do )?(yo)?u )?want "
+                  "to be) friends?))[.!?]?$", message.content) is not None:
+        print("*****\nRegex - Friend")
+        await friend(ctx)
+
+    # Friends
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)((who are your )?friends|friends?[ -]?list|who are you friends "
+                  r"with)[!.?]?$", message.content) is not None:
+        print("*****\nRegex - Friends")
+        await friends(ctx)
+
+    # Steal
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)steal[!.?]?$", message.content) is not None:
+        print("*****\nRegex - Friends")
+        await steal(ctx)
+
+    # Frequency
+    elif re.match(r"^<@[&!]?693216082567233667> (?i)((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
+                  message.content) is not None:
+        print("*****\nRegex - Friends")
+        value = re.match(r"^<@[&!]?693216082567233667> (?i)((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
+                         message.content).string.split()[-1].replace("!", "").rstrip("!?.")
+        await frequency(ctx, value)
+
+    # Instagram
+    elif re.match("^<@[&!]?693216082567233667> (?i)(instagram|insta|nussaggsallyandleo)[!.?]?$", message.content) is \
+            not None:
+        print("*****\nRegex - Insta")
         await instagram(ctx)
 
-    await bot.process_commands(message)  # runs commands first
+    else:
+        await bot.process_commands(message)  # runs commands first
 
 
 @bot.event
@@ -341,6 +408,13 @@ async def on_command_error(ctx, error):
         await ctx.send("I don't understand that command. Type `@SallyBot help` to learn what I can do")
         return
     raise error
+
+
+@bot.event
+async def on_ready():
+    print("I'm connected and ready to go!")
+
+    bot.loop.create_task(status())  # sets custom statuses for the bot
 
 
 bot.run(TOKEN)
