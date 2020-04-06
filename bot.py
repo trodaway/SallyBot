@@ -458,7 +458,9 @@ async def on_message(message):
         await _help(ctx)
 
     else:
-        await bot.process_commands(message)  # runs commands first
+        print("*****\nElse")
+        return
+        # await bot.process_commands(message)  # runs commands first
 
 
 @bot.event
