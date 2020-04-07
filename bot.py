@@ -387,7 +387,7 @@ async def on_message(message):
             else:  # any of Leo's messages that aren't roars
                 print("Trigger: add a reaction")
                 try:
-                    sally_emoji = get(bot.emojis(), id="689616621576257557")
+                    sally_emoji = bot.get_emoji(689616621576257557)
                     await message.add_reaction(sally_emoji)  # only works on SSAGO server
                 except discord.errors.HTTPException:
                     await message.add_reaction(u"\U0001F929")  # back-up, if not on the SSAGO server
