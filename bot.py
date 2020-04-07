@@ -3,7 +3,6 @@ import random
 import json
 import discord
 from discord.ext import commands
-from discord.utils import get
 import dotenv
 import re
 import giphy_client
@@ -411,7 +410,7 @@ async def on_message(message):
         await hi(ctx)
 
     # Leo
-    elif re.match(r"(?i)^<@[&!]?693216082567233667> (<@[&!]?689751502700675072>|leo ((the )?lion)?)[!.?]?$",
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (<@[&!]?689751502700675072>|leo(( the)? lion)?)[!.?]?$",
                   message.content) is not None:
         print("Regex- Leo")
         await leo(ctx)
@@ -422,8 +421,8 @@ async def on_message(message):
         await git(ctx)
 
     # Rally
-    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((viking|autumn|ssago) )?rally[!.?]?$", message.content) is not \
-            None:
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((viking|autumn( 2021)?|ssago) )?rally[!.?]?$", message.content) \
+            is not None:
         print("Regex - Rally")
         await rally(ctx)
 
