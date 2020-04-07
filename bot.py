@@ -395,7 +395,7 @@ async def on_message(message):
 
             # reacts to Leo protecting Sally
             elif re.match("(?i)^Glad I could help <@[!&]?693216082567233667>!$", message.content) is not None:
-                await message.add_reaction(":kissing_heart:")
+                await message.add_reaction("<:kissing_heart:>")
 
             else:  # any of Leo's messages that aren't roars
                 print("Trigger: add a reaction")
