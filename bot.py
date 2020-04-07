@@ -437,7 +437,7 @@ async def on_message(message):
                   message.content) is not None:
         print("Regex - Frequency")
         value = re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
-                         message.content).string.split()[-1].replace("!", "").rstrip("!?.")
+                         message.content).string.split()[-1].rstrip("!?.")
         await frequency(ctx, value)
 
     # Instagram
@@ -457,9 +457,11 @@ async def on_message(message):
         await _help(ctx)
 
     # Say
-    elif re.match(r"(?i)^<@[&!]?693216082567233667> (say|echo)[!.?]?$", message.content) is not None:
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (say|echo).*$", message.content) is not None:
         print("Regex - Say")
-        await say(ctx)
+        words = re.match(r"(?i)^<@[&!]?693216082567233667> (say|echo) .*$", message.content).string.split(" ")[2:]
+        value = " ".join(words)
+        await say(ctx, value)
 
     # If tagged but no command
     elif re.match(r"(?i)^<@[&!]?693216082567233667>$", message.content) is not None:
