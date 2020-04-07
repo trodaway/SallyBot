@@ -19,6 +19,9 @@ if not os.path.isfile("data/friends.txt"):
     with open("data/friends.txt", "w") as file:
         file.write("689579955012632586")  # adds Tim Rodaway, creator, as first friend
 
+if not os.path.isdir("temp"):
+    os.mkdir("temp")
+
 dotenv.load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GIPHY_TOKEN = os.getenv("GIPHY_TOKEN")
