@@ -369,9 +369,9 @@ async def on_message(message):
                     await channel.send(
                         f"{'a' * count + 'r' * int(count / 2) + 'g' * int(count / 2) + 'h' * int(count / 2)}")
                 elif choice == 1:
+                        await channel.send(gif_response
                     with channel.typing():
-                        print("Response: scream")
-                        await channel.send(gif_response("scream"))
+                        print("Response: scream")("scream"))
                 else:
                     print("Response: shush")
                     await channel.send(":shushing_face:")
@@ -386,6 +386,7 @@ async def on_message(message):
 
         # translates every 'x' to geordie
         elif translator_frequency != 0:  # set it to 0 to stop it from translating
+            print(f"Translator frequency: {translator_frequency}")  # for debugging
             if random.randrange(translator_frequency) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
                 translated_text = translator(message.content)
