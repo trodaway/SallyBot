@@ -386,7 +386,7 @@ async def on_message(message):
 
         # translates every 'x' to geordie
         elif translator_frequency != 0:  # set it to 0 to stop it from translating
-            print(f"Translator frequency: {translator_frequency}")  # for debugging
+            print(f"Translator frequency: {translator_frequency}\tType: {type(translator_frequency)}")  # for debugging
             if random.randrange(translator_frequency) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
                 translated_text = translator(message.content)
