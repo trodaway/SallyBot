@@ -3,3 +3,4 @@ discord.py==1.3.2
 instaloader==4.3
 python-dotenv==0.12.0
 beautifulsoup4==4.8.2
+emoji==0.5.4
