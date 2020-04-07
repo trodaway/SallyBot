@@ -369,9 +369,9 @@ async def on_message(message):
                     await channel.send(
                         f"{'a' * count + 'r' * int(count / 2) + 'g' * int(count / 2) + 'h' * int(count / 2)}")
                 elif choice == 1:
-                        await channel.send(gif_response
                     with channel.typing():
-                        print("Response: scream")("scream"))
+                        print("Response: scream")
+                        await channel.send(gif_response("scream"))
                 else:
                     print("Response: shush")
                     await channel.send(":shushing_face:")
