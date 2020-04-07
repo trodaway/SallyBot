@@ -3,6 +3,7 @@ import random
 import json
 import discord
 from discord.ext import commands
+from discord.utils import get
 import dotenv
 import re
 import giphy_client
@@ -227,6 +228,11 @@ async def steal(ctx):
         # if a NUSSAGG member tries to steal
         if 692795798416523356 in [role.id for role in ctx.author.roles]:
             await ctx.send(f"{ctx.author.mention} you can't steal me, you're part of my club")
+        # stops another mascot from stealing me
+        elif 689416586515447885 in [role.id for role in ctx.author.roles] or 690193852061188141 in [role.id for role in
+                                                                                                    ctx.author.roles]:
+            await ctx.send(f"{ctx.author.mention} I think you've broken the laws of SSAGO physics.. how can one mascot "
+                           f"steal another? Perhaps <@&689383534208614409> can weigh in on this one")
         # if a friend tries to steal, un-friend them
         elif str(ctx.author.id) in friend_list:
             friend_list.remove(str(ctx.author.id))
@@ -239,7 +245,7 @@ async def steal(ctx):
             if choice == 0:
                 await ctx.send("Better luck next time, I swam away")
             elif choice == 1:
-                await ctx.send("Before you got to me, <@689751502700675072> pounced at you, saving me :kissing_heart:")
+                await ctx.send("Before you got to me, <@689751502700675072> pounced at you, saving me!")
     except FileNotFoundError:
         await ctx.send("Better luck next time, I swam away")
 
@@ -386,6 +392,10 @@ async def on_message(message):
                 else:
                     print("Response: shush")
                     await channel.send(":shushing_face:")
+
+            # reacts to Leo protecting Sally
+            elif re.match("(?i)^Glad I could help <@[!&]?693216082567233667>!$", message.content) is not None:
+                await message.add_reaction(":kissing_heart:")
 
             else:  # any of Leo's messages that aren't roars
                 print("Trigger: add a reaction")
