@@ -3,7 +3,6 @@ import random
 import json
 import discord
 from discord.ext import commands
-from discord.utils import get
 import dotenv
 import re
 import giphy_client
@@ -327,6 +326,16 @@ async def geordie(ctx):
                        ":tired_face:. Please try again later!")
 
 
+@bot.command(name="catch")
+async def catch(ctx):
+    with open("data/catch.json", "r") as catch_file:
+        catchers = json.load(catch_file)
+        catcher = catchers[str(random.choice(range(len(catchers))))]
+        await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
+                       f" headbutt it over to <@{catcher['bot_id']}> ...")
+        await ctx.send(f"{catcher['action']}")
+
+
 bot.remove_command("help")
 
 
@@ -353,6 +362,7 @@ async def _help(ctx):
     embed.add_field(name="Instagram", value="Get a link to mine and Leo's insta - you'll even get a sneak peak out our "
                                             "latest adventures!", inline=False)
     embed.add_field(name="Geordie", value="Learn more about one of the many famous Geordies!", inline=False)
+    embed.add_field(name="Catch", value="Throw a ball to me and I'll try to catch it", inline=False)
     embed.add_field(name="Say <x>", value="Get me to say <x>", inline=False)
     embed.add_field(name="Help", value="Access this help menu", inline=False)
     embed.set_footer(text="Any problems, please contact Tim Rodaway")
@@ -395,7 +405,10 @@ async def on_message(message):
 
             # reacts to Leo protecting Sally
             elif re.match("(?i)^Glad I could help <@[!&]?693216082567233667>!$", message.content) is not None:
-                await message.add_reaction("<:kissing_heart:>")
+                await message.add_reaction(u"\U0001F618")
+
+            elif re.match("(?i)^Sorry, I didn't quite understand that!", message.content) is not None:
+                await message.add_reaction(u"\U0001F622")
 
             else:  # any of Leo's messages that aren't roars
                 print("Trigger: add a reaction")
@@ -505,6 +518,11 @@ async def on_message(message):
     elif re.match(r"(?i)^<@[&!]?693216082567233667> help[!.?]?$", message.content) is not None:
         print("Regex - Help")
         await _help(ctx)
+
+    # Catch
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> catch[!.?]?$", message.content) is not None:
+        print("Regex - Catch")
+        await catch(ctx)
 
     # Say
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (say|echo).*$", message.content) is not None:
