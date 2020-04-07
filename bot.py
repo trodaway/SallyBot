@@ -52,7 +52,8 @@ def gif_response(emotion):
 
 
 def translator(text_to_translate, dialect="geordie"):
-    text_for_url = urllib.parse.quote(text_to_translate)
+    clean_text_to_translate = text_to_translate.replace("�", "")
+    text_for_url = urllib.parse.quote(clean_text_to_translate)
     url = f"http://www.whoohoo.co.uk/main.asp?string={text_for_url}&pageid={dialect}&topic=translator"
     x = requests.post(url, timeout=1)
     if x.status_code == 200:
