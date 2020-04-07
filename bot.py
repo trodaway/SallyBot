@@ -100,7 +100,8 @@ async def spotify():
     print("Started Spotify Task")
     with open("data/artists.json", "r") as artists_file:
         artists = json.load(artists_file)
-    guild_channel = {689752642708308029: 689752642708308154}  # which channel to send to, per guild
+    # which channel to send to, per guild
+    guild_channel = {689752642708308029: 689752642708308154, 689381329535762446: 690198193623007262}
     while True:
         try:
             with open("temp/activities.json", "r") as temp_activities:
