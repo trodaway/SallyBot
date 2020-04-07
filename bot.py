@@ -235,11 +235,11 @@ async def steal(ctx):
 
 @bot.command(name="frequency", hidden=False, brief="Change how often I translate",
              help="Set the frequency of my translations. Set me to 0 to stop")
-async def frequency(ctx, *, arg: str):
+async def frequency(ctx, *arg):
     print(f"*****\nCommand: frequency\nCalled by: {ctx.author}")
     print(arg)
     global translator_frequency
-    if arg == '':
+    if len(arg) == 0:
         with open("data/translation_frequency.txt", "r") as freq:
             translator_frequency = freq.read()
         print(f"Translator frequency remains at: {translator_frequency}")
@@ -249,9 +249,9 @@ async def frequency(ctx, *, arg: str):
             await ctx.send("I'm trying to translate every message!")
         else:
             await ctx.send(f"There's currently a 1 in {translator_frequency} chance of me translating a message")
-    else:
+    elif len(arg) == 1:
         try:
-            translator_frequency = int(arg)
+            translator_frequency = int(arg[0])
             with open("data/translation_frequency.txt", "w") as freq:
                 freq.write(str(translator_frequency))
             print(f"Translator frequency set to: {translator_frequency}")
@@ -263,6 +263,8 @@ async def frequency(ctx, *, arg: str):
                 await ctx.send(f"There's now a 1 in {translator_frequency} chance of me translating a message")
         except ValueError:
             await ctx.send("Sorry, I don't understand the number. Please try it like `@Sally the Seahorse frequency 10")
+    else:
+        await ctx.send("Sorry, I don't understand the number. Please try it like `@Sally the Seahorse frequency 10")
 
 
 @bot.command(name="instagram", brief="Link to my Instagram", help="Get a link to mine and Leo's Instagram")
@@ -453,7 +455,7 @@ async def on_message(message):
     elif re.match(r"(?i)^<@[&!]?693216082567233667> ((current|translat(e|or)|geordie) )*freq(uency)[!?.]?$",
                   message.content) is not None:
         print("Regex - Get Frequency")
-        await frequency(ctx, '')
+        await frequency(ctx)
 
     # Set Frequency
     elif re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
