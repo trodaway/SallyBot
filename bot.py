@@ -318,6 +318,7 @@ async def _help(ctx):
     embed.add_field(name="Instagram", value="Get a link to mine and Leo's insta - you'll even get a sneak peak out our "
                                             "latest adventures!", inline=False)
     embed.add_field(name="Geordie", value="Learn more about one of the many famous Geordies!", inline=False)
+    embed.add_field(name="Say <x>", value="Get me to say <x>", inline=False)
     embed.add_field(name="Help", value="Access this help menu", inline=False)
     embed.set_footer(text="Any problems, please contact Tim Rodaway")
     await ctx.send(embed=embed)
