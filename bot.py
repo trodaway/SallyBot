@@ -13,6 +13,7 @@ import instaloader
 from bs4 import BeautifulSoup
 import urllib.parse
 import asyncio
+import emoji
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.isfile("data/friends.txt"):
@@ -52,14 +53,20 @@ def gif_response(emotion):
 
 
 def translator(text_to_translate, dialect="geordie"):
-    clean_text_to_translate = text_to_translate.replace("�", "")
-    text_for_url = urllib.parse.quote(clean_text_to_translate)
+    demojized_text = emoji.demojize(text_to_translate)
+    text_for_url = urllib.parse.quote(demojized_text)
+    print(f"Text to translate: {text_to_translate}\nText for URL: {text_for_url}")
     url = f"http://www.whoohoo.co.uk/main.asp?string={text_for_url}&pageid={dialect}&topic=translator"
     x = requests.post(url, timeout=1)
     if x.status_code == 200:
         soup = BeautifulSoup(x.text, features="html.parser")
         translation = soup.find_all('form')[1].b.get_text(strip=True)
-        return translation
+        if text_to_translate[0].isalpha() and text_to_translate[0].islower():
+            translation = translation.replace(translation[0], translation[0].lower(), 1)  # corrects capital at start
+        if not text_to_translate.endswith("."):
+            translation = translation.rstrip(".")  # removes full stop if not in original text
+        emojized_translation = emoji.emojize(translation)  # replaces emojis
+        return emojized_translation
     else:
         print(f"POST Request returned a status code of {x.status_code} for {url}")
         return None
