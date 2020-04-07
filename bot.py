@@ -456,11 +456,18 @@ async def on_message(message):
         print("Regex - Help")
         await _help(ctx)
 
+    # Say
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (say|echo)[!.?]?$", message.content) is not None:
+        print("Regex - Say")
+        await say(ctx)
+
+    # If tagged but no command
     elif re.match(r"(?i)^<@[&!]?693216082567233667>$", message.content) is not None:
         await ctx.send(f"Wye aye {ctx.author.mention}! Type `@Sally the Seahorse help` tuh learn warra gan dee.\nOr, in"
                        f" plain english:\n>>> Hi {ctx.author.mention}! Type `@Sally the Seahorse help` to learn what "
                        f"I can do.")
 
+    # If an unknown command
     elif re.match(r"(?i)^<@[&!]?693216082567233667>.*$", message.content) is not None:
         await ctx.send(f"Soz {ctx.author.mention}, ah divvint understand that command. Type `@Sally the Seahorse help` "
                        f"tuh learn warra gan dee.\nOr, in plain english:\n>>> Sorry {ctx.author.mention}, I don't "

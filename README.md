@@ -1,5 +1,5 @@
 # SallyBot
-A discord bot for Sally the Seahorse - One of NUSSAGG's Mascots
+A Discord bot for Sally the Seahorse - one of NUSSAGG's mascots
 
 ## To setup
 ### Files that need adding
