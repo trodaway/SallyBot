@@ -235,18 +235,34 @@ async def steal(ctx):
 
 @bot.command(name="frequency", hidden=False, brief="Change how often I translate",
              help="Set the frequency of my translations. Set me to 0 to stop")
-async def frequency(ctx, arg):
+async def frequency(ctx, *, arg: str):
+    print(f"*****\nCommand: frequency\nCalled by: {ctx.author}")
+    print(arg)
     global translator_frequency
-    translator_frequency = int(arg)
-    with open("data/translation_frequency.txt", "w") as freq:
-        freq.write(str(translator_frequency))
-    print(f"***** Translator frequency set to: {translator_frequency} *****")
-    if translator_frequency == 0:
-        await ctx.send("I'll stop translating")
-    elif translator_frequency == 1:
-        await ctx.send("I'll translate every message!")
+    if arg == '':
+        with open("data/translation_frequency.txt", "r") as freq:
+            translator_frequency = freq.read()
+        print(f"Translator frequency remains at: {translator_frequency}")
+        if translator_frequency == 0:
+            await ctx.send("I'm currently not translating")
+        elif translator_frequency == 1:
+            await ctx.send("I'm trying to translate every message!")
+        else:
+            await ctx.send(f"There's currently a 1 in {translator_frequency} chance of me translating a message")
     else:
-        await ctx.send(f"There's now a 1 in {translator_frequency} chance of me translating a message")
+        try:
+            translator_frequency = int(arg)
+            with open("data/translation_frequency.txt", "w") as freq:
+                freq.write(str(translator_frequency))
+            print(f"Translator frequency set to: {translator_frequency}")
+            if translator_frequency == 0:
+                await ctx.send("I'll stop translating")
+            elif translator_frequency == 1:
+                await ctx.send("I'll try to translate every message!")
+            else:
+                await ctx.send(f"There's now a 1 in {translator_frequency} chance of me translating a message")
+        except ValueError:
+            await ctx.send("Sorry, I don't understand the number. Please try it like `@Sally the Seahorse frequency 10")
 
 
 @bot.command(name="instagram", brief="Link to my Instagram", help="Get a link to mine and Leo's Instagram")
