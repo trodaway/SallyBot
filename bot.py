@@ -241,7 +241,7 @@ async def frequency(ctx, *arg):
     global translator_frequency
     if len(arg) == 0:
         with open("data/translation_frequency.txt", "r") as freq:
-            translator_frequency = freq.read()
+            translator_frequency = int(freq.read())
         print(f"Translator frequency remains at: {translator_frequency}")
         if translator_frequency == 0:
             await ctx.send("I'm currently not translating")
@@ -385,9 +385,9 @@ async def on_message(message):
                     await message.add_reaction(u"\U0001F929")  # back-up, if not on the SSAGO server
 
         # translates every 'x' to geordie
-        elif translator_frequency != 0:  # set it to 0 to stop it from translating
+        elif int(translator_frequency) != 0:  # set it to 0 to stop it from translating
             print(f"Translator frequency: {translator_frequency}\tType: {type(translator_frequency)}")  # for debugging
-            if random.randrange(translator_frequency) == 0 and \
+            if random.randrange(int(translator_frequency)) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
                 translated_text = translator(message.content)
                 if translated_text is not None and not (translated_text.lower() == message.content.lower() or
