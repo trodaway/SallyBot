@@ -235,7 +235,11 @@ async def steal(ctx):
             await ctx.send(f"{ctx.author.mention} you were meant to be my friend")
         # if someone else tries to steal, they fail
         else:
-            await ctx.send("Better luck next time, I swam away")
+            choice = random.choice(range(2))
+            if choice == 0:
+                await ctx.send("Better luck next time, I swam away")
+            elif choice == 1:
+                await ctx.send("Before you got to me, <@689751502700675072> pounced at you, saving me :kissing_heart:")
     except FileNotFoundError:
         await ctx.send("Better luck next time, I swam away")
 
