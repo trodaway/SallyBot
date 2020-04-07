@@ -121,7 +121,7 @@ async def rally(ctx):
     print(f"*****\nCommand: rally\nCalled by: {ctx.author}")
     await ctx.send("My friends from NUSSAGG and DUSAGG are hosting Viking Rally in November 2021! Please come join us "
                    "for a weekend of great fun in the Toon and surrounding areas. Its a canny place to be! Find out "
-                   "more about SSAGO's raid of the North East on the [SSAGO Website](https://viking-rally.ssago.org/)")
+                   "more about SSAGO's raid of the North East on the SSAGO Website -> https://viking-rally.ssago.org/")
 
 
 @bot.command(name="credits", brief="My credits", help="Find out who makes me work (or not work!)")
@@ -461,16 +461,19 @@ async def on_message(message):
         await steal(ctx)
 
     # Get Frequency
-    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((current|translat(e|or)|geordie) )*freq(uency)[!?.]?$",
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (get )?(current )?((translat(e|or|ion)|geordie|geordie translat"
+                  r"(e|or|ion)) )?freq(uency)?[!?.]?$",
                   message.content) is not None:
         print("Regex - Get Frequency")
         await frequency(ctx)
 
     # Set Frequency
-    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (set )?((translat(e|or|ion)|geordie|geordie translat(e|or|ion)) )?"
+                  r"freq(uency)? \d+[!?.]?$",
                   message.content) is not None:
         print("Regex - Set Frequency")
-        value = re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
+        value = re.match(r"(?i)^<@[&!]?693216082567233667> (set )?((translat(e|or|ion)|geordie|geordie translat(e|or|"
+                         r"ion)) )?freq(uency)? \d+[!?.]?",
                          message.content).string.split()[-1].rstrip("!?.")
         await frequency(ctx, value)
 
