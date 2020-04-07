@@ -461,7 +461,7 @@ async def on_message(message):
         print("Regex - Say")
         words = re.match(r"(?i)^<@[&!]?693216082567233667> (say|echo) .*$", message.content).string.split(" ")[2:]
         value = " ".join(words)
-        await say(ctx, value)
+        await say(ctx, arg=value)
 
     # If tagged but no command
     elif re.match(r"(?i)^<@[&!]?693216082567233667>$", message.content) is not None:
