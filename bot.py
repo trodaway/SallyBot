@@ -321,7 +321,7 @@ async def geordie(ctx):
 bot.remove_command("help")
 
 
-@bot.command(name="help")
+@bot.command(name="help", invoke_without_command=True)
 async def _help(ctx):
     print(f"*****\nCommand: help\nCalled by: {ctx.author}")
     embed = discord.Embed(title="Sally the Seahorse", url="https://github.com/trodaway/SallyBot",
