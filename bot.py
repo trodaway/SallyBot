@@ -359,6 +359,7 @@ async def _help(ctx):
     embed.add_field(name="Frequency <x>",
                     value="Set the frequency of my translator, so that I only have a 1 in x chance of translating. If I"
                           " really annoy you, feel free to stop me all together with 0.", inline=False)
+    embed.add_field(name="Frequency", value="I'll tell you how often I'm translating messages currently", inline=False)
     embed.add_field(name="Instagram", value="Get a link to mine and Leo's insta - you'll even get a sneak peak out our "
                                             "latest adventures!", inline=False)
     embed.add_field(name="Geordie", value="Learn more about one of the many famous Geordies!", inline=False)
