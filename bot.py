@@ -449,10 +449,16 @@ async def on_message(message):
         print("Regex - Steal")
         await steal(ctx)
 
-    # Frequency
+    # Get Frequency
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> ((current|translat(e|or)|geordie) )*freq(uency)[!?.]?$",
+                  message.content) is not None:
+        print("Regex - Get Frequency")
+        await frequency(ctx, '')
+
+    # Set Frequency
     elif re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
                   message.content) is not None:
-        print("Regex - Frequency")
+        print("Regex - Set Frequency")
         value = re.match(r"(?i)^<@[&!]?693216082567233667> ((set|translat(e|or)|geordie) )*freq(uency) \d+[!?.]?$",
                          message.content).string.split()[-1].rstrip("!?.")
         await frequency(ctx, value)
