@@ -101,7 +101,8 @@ async def spotify():
     with open("data/artists.json", "r") as artists_file:
         artists = json.load(artists_file)
     # which channel to send to, per guild
-    guild_channel = {689752642708308029: 689752642708308154, 689381329535762446: 690198193623007262}
+    # guild_channel = {689752642708308029: 689752642708308154}  # Test Server
+    guild_channel = {689381329535762446: 690198193623007262}  # SSAGO Server
     while True:
         try:
             with open("temp/activities.json", "r") as temp_activities:
@@ -115,12 +116,17 @@ async def spotify():
                 for member in guild.members:
                     for activity in member.activities:
                         if type(activity) is discord.Spotify:
-                            if activity.artist in artists.keys():
-                                if activities.get(str(member.id)) != activity.artist:
-                                    await channel.send(f"{member.mention}, I hope you're enjoying listening to "
-                                                       f"{activity.title} by {activity.artist}!\n"
-                                                       f"{artists[activity.artist]['fact']}")
-                                    activities[member.id] = activity.artist
+                            # print(f"User: {member.display_name}\nArtist: {activity.artist}\nTitle: {activity.title}")
+                            if any(i in artists.keys() for i in activity.artists) and \
+                                    not any(i in activities.get(str(member.id)) for i in activity.artists):
+                                for artist in activity.artists:
+                                    if artist in artists.keys():
+                                        print(f"{member.mention}\n{activity.title}\n{activity.artist}\n{artists[artist]}")
+                                        await channel.send(f"{member.mention}, I hope you're enjoying listening to "
+                                                           f"{activity.title} by {activity.artist}!\n\n"
+                                                           f"{artists[artist]}")
+                                        print(f"{member.display_name} is listening to {artist}")
+                                        activities[member.id] = artist
         with open("temp/activities.json", "w") as temp_activities:
             json.dump(activities, temp_activities)
         await asyncio.sleep(5)
