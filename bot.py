@@ -117,10 +117,9 @@ async def spotify():
                         if type(activity) is discord.Spotify:
                             if activity.artist in artists.keys():
                                 if activities.get(str(member.id)) != activity.artist:
-                                    # print(artists[activity.artist])
                                     await channel.send(f"{member.mention}, I hope you're enjoying listening to "
                                                        f"{activity.title} by {activity.artist}!\n"
-                                                       f"{artists[activity.artist]}")
+                                                       f"{artists[activity.artist]['fact']}")
                                     activities[member.id] = activity.artist
         with open("temp/activities.json", "w") as temp_activities:
             json.dump(activities, temp_activities)
