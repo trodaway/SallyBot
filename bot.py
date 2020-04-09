@@ -121,7 +121,8 @@ async def spotify():
                                     not any(i in activities.get(str(member.id)) for i in activity.artists):
                                 for artist in activity.artists:
                                     if artist in artists.keys():
-                                        print(f"{member.mention}\n{activity.title}\n{activity.artist}\n{artists[artist]}")
+                                        print(f"{member.mention}\n{activity.title}\n{activity.artist}\n"
+                                              f"{artists[artist]}")
                                         await channel.send(f"{member.mention}, I hope you're enjoying listening to "
                                                            f"{activity.title} by {activity.artist}!\n\n"
                                                            f"{artists[artist]}")
@@ -560,7 +561,10 @@ async def on_message(message):
         await _help(ctx)
 
     # Catch
-    elif re.match(r"(?i)^<@[&!]?693216082567233667> catch[!.?]?$", message.content) is not None:
+    elif re.match(r"(?i)^(<@[&!]?693216082567233667> catch[!.?]?|I catch the ball in the air, and fly it straight back "
+                  r"over to <@[&!]?693216082567233667>|(Rob|James) catches the ball, and throws it to "
+                  r"<@[&!]?693216082567233667>|<@[&!]?\d+>, Freddo catches the ball, and throws it to "
+                  r"<@[&!]?693216082567233667>, catch!)$", message.content) is not None:
         print("Regex - Catch")
         await catch(ctx)
 
