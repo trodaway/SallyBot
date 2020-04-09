@@ -564,6 +564,7 @@ async def on_message(message):
     elif re.match(r"(?i)^(<@[&!]?693216082567233667> catch[!.?]?|I catch the ball in the air, and fly it straight back "
                   r"over to <@[&!]?693216082567233667>|(Rob|James) catches the ball, and throws it to "
                   r"<@[&!]?693216082567233667>|<@[&!]?\d+>, Freddo catches the ball, and throws it to "
+                  r"<@[&!]?693216082567233667>, catch!|<@[&!]?\d+>, Morrissey's catches the ball, and throws it to "
                   r"<@[&!]?693216082567233667>, catch!)$", message.content) is not None:
         print("Regex - Catch")
         await catch(ctx)
