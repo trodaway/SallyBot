@@ -373,7 +373,9 @@ async def catch(ctx):
     with open("data/catch.json", "r") as catch_file:
         catchers = json.load(catch_file)
         catcher = catchers[str(random.choice(range(len(catchers))))]
-        await asyncio.sleep(random.randrange(2, 7))
+        if ctx.author.bot:
+            print("Bot = True")
+            await asyncio.sleep(random.randrange(2, 7))
         while int(catcher["bot_id"]) not in [member.id for member in ctx.guild.members]:
             catcher = catchers[str(random.choice(range(len(catchers))))]
         await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
