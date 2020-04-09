@@ -27,6 +27,8 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GIPHY_TOKEN = os.getenv("GIPHY_TOKEN")
 INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
+silence = False
+
 
 # Sets how often the translator occurs, defaulting to 10
 try:
@@ -371,9 +373,13 @@ async def catch(ctx):
     with open("data/catch.json", "r") as catch_file:
         catchers = json.load(catch_file)
         catcher = catchers[str(random.choice(range(len(catchers))))]
+        await asyncio.sleep(random.randrange(2, 7))
+        while int(catcher["bot_id"]) not in [member.id for member in ctx.guild.members]:
+            catcher = catchers[str(random.choice(range(len(catchers))))]
         await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
                        f" headbutt it over to <@{catcher['bot_id']}> ...")
-        await ctx.send(f"{catcher['action']}")
+        if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
+            await ctx.send(f"{catcher['action']}")
 
 
 bot.remove_command("help")
@@ -406,17 +412,39 @@ async def _help(ctx):
     embed.add_field(name="Catch", value="Throw a ball to me and I'll try to catch it", inline=False)
     embed.add_field(name="Say <x>", value="Get me to say <x>", inline=False)
     embed.add_field(name="Help", value="Access this help menu", inline=False)
+    embed.add_field(name="Mute", value="Please only use if I'm broken and being a nuisance", inline=False)
     embed.set_footer(text="Any problems, please contact Tim Rodaway")
     await ctx.send(embed=embed)
 
 
+@bot.command(name="mute")
+async def mute(ctx):
+    await ctx.send(f"<@689579955012632586>, I'm being silenced by {ctx.author.mention}")
+    global silence
+    silence = True
+
+
 @bot.event
 async def on_message(message):
-    # ctx = bot.get_context(message)
+    ctx = await bot.get_context(message)
+
+    # method of silencing if spamming
+    global silence
+    if silence:
+        if message.author.id == 689579955012632586:  # only if creator messages
+            if re.match(r"(?i)^<@[&!]?693216082567233667> (un-?(mute|silence)|resume|talk)$", message.content) is not \
+                    None:
+                silence = False
+                await ctx.send("Yay - I can talk once more!")
+            elif re.match(r"(?i)^<@[&!]?693216082567233667>", message.content) is not None:
+                await ctx.send("I'm being quiet. You, and only you, can unmute me with the `unmute` command")
+        elif re.match(r"(?i)^<@[&!]?693216082567233667>", message.content) is not None and not ctx.author.bot:
+            await ctx.send("I'm being quiet. Please ask <@689579955012632586> to `unmute` me")
+        return
+
     channel = message.channel
     print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}\nChannel: "
           f"{channel.name}")
-    ctx = await bot.get_context(message)
 
     # stops it replying to itself
     if (message.author == bot.user) or (message.content == ""):
@@ -576,11 +604,21 @@ async def on_message(message):
         value = " ".join(words)
         await say(ctx, arg=value)
 
+    # Say
+    elif re.match(r"(?i)^<@[&!]?693216082567233667> (silence|mute|stop)$", message.content) is not None:
+        print("Regex - Mute")
+        await mute(ctx)
+
     # If tagged but no command
     elif re.match(r"(?i)^<@[&!]?693216082567233667>$", message.content) is not None:
         await ctx.send(f"Wye aye {ctx.author.mention}! Type `@Sally the Seahorse help` tuh learn warra gan dee.\nOr, in"
                        f" plain english:\n>>> Hi {ctx.author.mention}! Type `@Sally the Seahorse help` to learn what "
                        f"I can do.")
+
+    # If being tagged in a catch, don't respond
+    elif re.match(r"(?i)^<@[&!]?693216082567233667>, (Freddo|Morrissey's) catches the ball", message.content) \
+            is not None:
+        return
 
     # If an unknown command
     elif re.match(r"(?i)^<@[&!]?693216082567233667>.*$", message.content) is not None:
