@@ -449,8 +449,12 @@ async def on_message(message):
           f"{channel.name}")
 
     # stops it replying to itself
-    if (message.author == bot.user) or (message.content == ""):
+    if message.author == bot.user:
         print("Trigger: It's me!")
+        return
+    
+    elif message.content == "":
+        print("Trigger: No textual content in message")
         return
 
     # reacts to all of Leo's messages
