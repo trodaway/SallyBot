@@ -4,3 +4,5 @@ instaloader==4.3
 python-dotenv==0.12.0
 beautifulsoup4==4.8.2
 emoji==0.5.4
+requests~=2.24.0
+aiohttp~=3.6.2

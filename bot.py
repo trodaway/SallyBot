@@ -14,6 +14,8 @@ import urllib.parse
 import asyncio
 import emoji
 import datetime
+import aiohttp
+import io
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.isfile("data/friends.txt"):
@@ -479,7 +481,24 @@ async def on_message(message):
             await ctx.send("I'm being quiet. Please ask <@689579955012632586> to `unmute` me")
         return
 
+    if message.channel.id == 769722089883172905:  # only if creator direct messages
+        print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}")
+        print(message.attachments)
+        if message.author == bot.user:
+            return
+        if len(message.attachments) > 0 and message.content == "Meme":
+            for attachment in message.attachments:
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(attachment.url) as resp:
+                        if resp.status != 200:
+                            return await message.channel.send("Could not download file...")
+                        data = io.BytesIO(await resp.read())
+                        channel = bot.get_channel(689401725005725709)  # SSAGO meme server
+                        await channel.send(file=discord.File(data, os.path.basename(attachment.url)))
+        return
+
     channel = message.channel
+
     print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}\nChannel: "
           f"{channel.name}")
 
@@ -687,10 +706,6 @@ async def on_ready():
     bot.loop.create_task(status())  # sets custom statuses for the bot
     bot.loop.create_task(spotify())
     bot.loop.create_task(catch_auto())
-
-    # channel = bot.get_channel(689401725005725709)
-    # await channel.send("Did someone say a Meme Spork? :eyes:")
-    # await channel.send(file=discord.File('4jqd47.jpg'))
 
 
 bot.run(TOKEN)
