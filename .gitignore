@@ -1,3 +1,4 @@
 .env
 .vscode
 api/config/db_config.php
+/venv/

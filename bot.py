@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import asyncio
 import emoji
+import datetime
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.isfile("data/friends.txt"):
@@ -133,6 +134,39 @@ async def spotify():
         with open("temp/activities.json", "w") as temp_activities:
             json.dump(activities, temp_activities)
         await asyncio.sleep(5)
+
+
+async def catch_auto():
+    while True:
+        # trigger once per day, at a random time
+        time_of_day = random.random() * 86400
+        now = datetime.datetime.now().timestamp() % 86400
+        delay = time_of_day - now
+        if delay < 0:
+            delay += 86400
+
+        print(f"Next random catch will be activated at {str(datetime.timedelta(seconds=time_of_day))}")
+
+        await asyncio.sleep(delay)
+
+        guild = [guild for guild in bot.guilds if guild.id == 689381329535762446][0]
+        channel = [channel for channel in guild.channels if channel.id == 690198193623007262][0]
+
+        with open("data/catch.json", "r") as catch_file:
+            catchers = json.load(catch_file)
+            catcher = catchers[str(random.choice(range(len(catchers))))]
+            while int(catcher["bot_id"]) not in [member.id for member in guild.members if
+                                                 member.status == discord.Status.online]:
+                catcher = catchers[str(random.choice(range(len(catchers))))]
+            await channel.send(f"It's time for our daily game of catch! Since I don't have any arms I'm going to start "
+                               f"by headbutting it over to <@{catcher['bot_id']}> ...")
+            if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
+                await channel.send(f"{catcher['action']}")
+
+        # sleeps until midnight
+        now = datetime.datetime.now().timestamp() % 86400
+        delay = 86400 - now
+        await asyncio.sleep(delay)
 
 
 @bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
@@ -376,7 +410,8 @@ async def catch(ctx):
         if ctx.author.bot:
             print("Bot = True")
             await asyncio.sleep(random.randrange(2, 7))
-        while int(catcher["bot_id"]) not in [member.id for member in ctx.guild.members]:
+        while int(catcher["bot_id"]) not in [member.id for member in ctx.guild.members if
+                                             member.status == discord.Status.online]:
             catcher = catchers[str(random.choice(range(len(catchers))))]
         await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
                        f" headbutt it over to <@{catcher['bot_id']}> ...")
@@ -452,7 +487,7 @@ async def on_message(message):
     if message.author == bot.user:
         print("Trigger: It's me!")
         return
-    
+
     elif message.content == "":
         print("Trigger: No textual content in message")
         return
@@ -651,6 +686,11 @@ async def on_ready():
     print("I'm connected and ready to go!")
     bot.loop.create_task(status())  # sets custom statuses for the bot
     bot.loop.create_task(spotify())
+    bot.loop.create_task(catch_auto())
+
+    # channel = bot.get_channel(689401725005725709)
+    # await channel.send("Did someone say a Meme Spork? :eyes:")
+    # await channel.send(file=discord.File('4jqd47.jpg'))
 
 
 bot.run(TOKEN)
