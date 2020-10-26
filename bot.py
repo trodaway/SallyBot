@@ -481,7 +481,9 @@ async def on_message(message):
             await ctx.send("I'm being quiet. Please ask <@689579955012632586> to `unmute` me")
         return
 
-    if message.channel.id == 769722089883172905:  # only if creator direct messages
+    print("*"*10, message.channel.id)
+
+    if message.channel.id in [769722089883172905, 770426394894139413]:  # limits to certain people (Tim & Jack)
         print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}")
         print(message.attachments)
         if message.author == bot.user:
