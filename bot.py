@@ -465,6 +465,9 @@ async def mute(ctx):
 
 @bot.event
 async def on_message(message):
+
+    now = datetime.datetime.now().isoformat()
+
     ctx = await bot.get_context(message)
 
     # method of silencing if spamming
@@ -481,11 +484,11 @@ async def on_message(message):
             await ctx.send("I'm being quiet. Please ask <@689579955012632586> to `unmute` me")
         return
 
-    print("*"*10, message.channel.id)
+    # print("*"*10, message.channel.id)
 
     if message.channel.id in [769722089883172905, 770426394894139413]:  # limits to certain people (Tim & Jack)
-        print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}")
-        print(message.attachments)
+        # print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}")
+        # print(message.attachments)
         if message.author == bot.user:
             return
         if len(message.attachments) > 0 and message.content == "Meme":
@@ -496,27 +499,28 @@ async def on_message(message):
                             return await message.channel.send("Could not download file...")
                         data = io.BytesIO(await resp.read())
                         channel = bot.get_channel(689401725005725709)  # SSAGO meme server
+                        print(f"{now}: Sending Meme")
                         await channel.send(file=discord.File(data, os.path.basename(attachment.url)))
         return
 
     channel = message.channel
 
-    print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}\nChannel: "
-          f"{channel.name}")
+    # print(f"*****\nTimestamp: {now}\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: "
+    #       f"{message.author.id}\nChannel: {channel.name}")
 
     # stops it replying to itself
     if message.author == bot.user:
-        print("Trigger: It's me!")
+        # print(f"{now}: Trigger: It's me!")
         return
 
     elif message.content == "":
-        print("Trigger: No textual content in message")
+        # print(f"{now}: Trigger: No textual content in message")
         return
 
     # reacts to all of Leo's messages
     else:
         if message.author.id == 689751502700675072:
-            print("Trigger: It's Leo!")
+            print(f"{now}: Trigger: It's Leo!")
 
             if re.match("^Ro+a+r$", message.content) is not None:  # reacts to Leo's roars
                 print("Trigger: Leo Roared")
@@ -551,84 +555,85 @@ async def on_message(message):
 
         # translates every 'x' to geordie
         elif int(translator_frequency) != 0:  # set it to 0 to stop it from translating
-            print(f"Translator frequency: {translator_frequency}\tType: {type(translator_frequency)}")  # for debugging
+            # print(f"Translator frequency: {translator_frequency}\tType: {type(translator_frequency)}")
             if random.randrange(int(translator_frequency)) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None:
+                print(f"{now}: Translating...")
                 translated_text = translator(message.content)
                 if translated_text is not None and not (translated_text.lower() == message.content.lower() or
                                                         translated_text.rstrip(".").lower() == message.content.lower()):
                     await channel.send(f"In the Toon we'd say that like:\n>>> {translated_text}")
 
-    print("Pre-regex")
+    # print("Pre-regex")
 
     # Hi
     if re.match(r"(?i)^<@[&!]?693216082567233667> (hi|hello|hey|wye aye|aareet|alreet)[!.?]?$", message.content) is \
             not None:
-        print("Regex- Hi")
+        print(f"{now}: Regex- Hi")
         await hi(ctx)
 
     # Leo
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (<@[&!]?689751502700675072>|leo(( the)? lion)?)[!.?]?$",
                   message.content) is not None:
-        print("Regex- Leo")
+        print(f"{now}: Regex- Leo")
         await leo(ctx)
 
     # Git
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (git(hub)?|brains?)[!.?]?$", message.content) is not None:
-        print("Regex - Git")
+        print(f"{now}: Regex - Git")
         await git(ctx)
 
     # Rally
     elif re.match(r"(?i)^<@[&!]?693216082567233667> ((viking|autumn( 2021)?|ssago) )?rally[!.?]?$", message.content) \
             is not None:
-        print("Regex - Rally")
+        print(f"{now}: Regex - Rally")
         await rally(ctx)
 
     # Credits
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (cred(it)?s?|contrib(utor)?s?)[!.?]?$", message.content) is not \
             None:
-        print("Regex - Credits")
+        print(f"{now}: Regex - Credits")
         await _credits(ctx)
 
     # Facts
     elif re.match(r"(?i)^<@[&!]?693216082567233667> ((sea[ -]?horse) )?facts?[!.?]?$", message.content) is not None:
-        print("Regex - Facts")
+        print(f"{now}: Regex - Facts")
         await fact(ctx)
 
     # Jokes
     elif re.match(r"(?i)^<@[&!]?693216082567233667> ((sea[ -]?horse) )?jokes?[!.?]?$", message.content) is not None:
-        print("Regex - Jokes")
+        print(f"{now}: Regex - Jokes")
         await joke(ctx)
 
     # Friend
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (friend|befriend|(((let('s| us) be)|can we be|((do )?(yo)?u )?want "
                   "to be) friends?))[.!?]?$", message.content) is not None:
-        print("Regex - Friend")
+        print(f"{now}: Regex - Friend")
         await friend(ctx)
 
     # Friends
     elif re.match(r"(?i)^<@[&!]?693216082567233667> ((who are your )?friends|friends?[ -]?list|who are you friends "
                   r"with)[!.?]?$", message.content) is not None:
-        print("Regex - Friends")
+        print(f"{now}: Regex - Friends")
         await friends(ctx)
 
     # Steal
     elif re.match(r"(?i)^<@[&!]?693216082567233667> steal[!.?]?$", message.content) is not None:
-        print("Regex - Steal")
+        print(f"{now}: Regex - Steal")
         await steal(ctx)
 
     # Get Frequency
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (get )?(current )?((translat(e|or|ion)|geordie|geordie translat"
                   r"(e|or|ion)) )?freq(uency)?[!?.]?$",
                   message.content) is not None:
-        print("Regex - Get Frequency")
+        print(f"{now}: Regex - Get Frequency")
         await frequency(ctx)
 
     # Set Frequency
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (set )?((translat(e|or|ion)|geordie|geordie translat(e|or|ion)) )?"
                   r"freq(uency)? \d+[!?.]?$",
                   message.content) is not None:
-        print("Regex - Set Frequency")
+        print(f"{now}: Regex - Set Frequency")
         value = re.match(r"(?i)^<@[&!]?693216082567233667> (set )?((translat(e|or|ion)|geordie|geordie translat(e|or|"
                          r"ion)) )?freq(uency)? \d+[!?.]?",
                          message.content).string.split()[-1].rstrip("!?.")
@@ -637,17 +642,17 @@ async def on_message(message):
     # Instagram
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (instagram|insta|nussaggsallyandleo)[!.?]?$", message.content) is \
             not None:
-        print("Regex - Insta")
+        print(f"{now}: Regex - Insta")
         await instagram(ctx)
 
     # Geordie
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (famous )?geordie[!.?]?$", message.content) is not None:
-        print("Regex - Geordie")
+        print(f"{now}: Regex - Geordie")
         await geordie(ctx)
 
     # Help
     elif re.match(r"(?i)^<@[&!]?693216082567233667> help[!.?]?$", message.content) is not None:
-        print("Regex - Help")
+        print(f"{now}: Regex - Help")
         await _help(ctx)
 
     # Catch
@@ -656,23 +661,24 @@ async def on_message(message):
                   r"<@[&!]?693216082567233667>|<@[&!]?\d+>, Freddo catches the ball, and throws it to "
                   r"<@[&!]?693216082567233667>, catch!|<@[&!]?\d+>, Morrissey's catches the ball, and throws it to "
                   r"<@[&!]?693216082567233667>, catch!)$", message.content) is not None:
-        print("Regex - Catch")
+        print(f"{now}: Regex - Catch")
         await catch(ctx)
 
     # Say
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (say|echo).*$", message.content) is not None:
-        print("Regex - Say")
+        print(f"{now}: Regex - Say")
         words = re.match(r"(?i)^<@[&!]?693216082567233667> (say|echo) .*$", message.content).string.split(" ")[2:]
         value = " ".join(words)
         await say(ctx, arg=value)
 
     # Say
     elif re.match(r"(?i)^<@[&!]?693216082567233667> (silence|mute|stop)$", message.content) is not None:
-        print("Regex - Mute")
+        print(f"{now}: Regex - Mute")
         await mute(ctx)
 
     # If tagged but no command
     elif re.match(r"(?i)^<@[&!]?693216082567233667>$", message.content) is not None:
+        print(f"{now}: Tagged, but no command given")
         await ctx.send(f"Wye aye {ctx.author.mention}! Type `@Sally the Seahorse help` tuh learn warra gan dee.\nOr, in"
                        f" plain english:\n>>> Hi {ctx.author.mention}! Type `@Sally the Seahorse help` to learn what "
                        f"I can do.")
@@ -680,6 +686,7 @@ async def on_message(message):
     # If being tagged in a catch, don't respond
     elif re.match(r"(?i)^<@[&!]?693216082567233667>, (Freddo|Morrissey's) catches the ball", message.content) \
             is not None:
+        print(f"{now}: Tagged in a false positive catch")
         return
 
     # If an unknown command
@@ -687,6 +694,7 @@ async def on_message(message):
         await ctx.send(f"Soz {ctx.author.mention}, ah divvint understand that command. Type `@Sally the Seahorse help` "
                        f"tuh learn warra gan dee.\nOr, in plain english:\n>>> Sorry {ctx.author.mention}, I don't "
                        f"understand that command. Type `@Sally the Seahorse help` to learn what I can do.")
+        print(f"{now}: Tagged in an unknown command\n{message.content}")
 
     else:
         return
