@@ -16,6 +16,7 @@ import emoji
 import datetime
 import aiohttp
 import io
+import time
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 if not os.path.isfile("data/friends.txt"):
@@ -412,9 +413,12 @@ async def catch(ctx):
         if ctx.author.bot:
             print("Bot = True")
             await asyncio.sleep(random.randrange(2, 7))
-        while int(catcher["bot_id"]) not in [member.id for member in ctx.guild.members if
-                                             member.status == discord.Status.online]:
+        timeout = time.time() + 60
+        while time.time() < timeout:
             catcher = catchers[str(random.choice(range(len(catchers))))]
+            if int(catcher["bot_id"]) in [member.id for member in ctx.guild.members if
+                                          member.status == discord.Status.online]:
+                break
         await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
                        f" headbutt it over to <@{catcher['bot_id']}> ...")
         if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
