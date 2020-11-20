@@ -80,8 +80,10 @@ def translator(text_to_translate, dialect="geordie"):
         return None
 
 
+intents = discord.Intents.all()
+
 # BASIC TEXT COMMANDS
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("?Sally"), case_insensitive=True)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("?Sally"), case_insensitive=True, intents=intents)
 
 
 async def status():
@@ -157,14 +159,16 @@ async def catch_auto():
 
         with open("data/catch.json", "r") as catch_file:
             catchers = json.load(catch_file)
+        catcher = catchers[str(random.choice(range(len(catchers))))]
+        timeout = time.time() + 10
+        while time.time() < timeout:
+            if int(catcher["id"]) in [member.id for member in guild.members if member.status == discord.Status.online]:
+                break
             catcher = catchers[str(random.choice(range(len(catchers))))]
-            while int(catcher["bot_id"]) not in [member.id for member in guild.members if
-                                                 member.status == discord.Status.online]:
-                catcher = catchers[str(random.choice(range(len(catchers))))]
-            await channel.send(f"It's time for our daily game of catch! Since I don't have any arms I'm going to start "
-                               f"by headbutting it over to <@{catcher['bot_id']}> ...")
-            if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
-                await channel.send(f"{catcher['action']}")
+        await channel.send(f"It's time for our daily game of catch! Since I don't have any arms I'm going to start by "
+                           f"headbutting it over to <@{catcher['id']}> ...")
+        if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
+            await channel.send(f"{catcher['action']}")
 
         # sleeps until midnight
         now = datetime.datetime.now().timestamp() % 86400
@@ -409,20 +413,19 @@ async def geordie(ctx):
 async def catch(ctx):
     with open("data/catch.json", "r") as catch_file:
         catchers = json.load(catch_file)
+    if ctx.author.bot:
+        print("Bot = True")
+        await asyncio.sleep(random.randrange(2, 7))
+    catcher = catchers[str(random.choice(range(len(catchers))))]
+    timeout = time.time() + 10
+    while time.time() < timeout:
+        if int(catcher["id"]) in [member.id for member in ctx.guild.members if member.status == discord.Status.online]:
+            break
         catcher = catchers[str(random.choice(range(len(catchers))))]
-        if ctx.author.bot:
-            print("Bot = True")
-            await asyncio.sleep(random.randrange(2, 7))
-        timeout = time.time() + 60
-        while time.time() < timeout:
-            catcher = catchers[str(random.choice(range(len(catchers))))]
-            if int(catcher["bot_id"]) in [member.id for member in ctx.guild.members if
-                                          member.status == discord.Status.online]:
-                break
-        await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
-                       f" headbutt it over to <@{catcher['bot_id']}> ...")
-        if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
-            await ctx.send(f"{catcher['action']}")
+    await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
+                   f" headbutt it over to <@{catcher['id']}> ...")
+    if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
+        await ctx.send(f"{catcher['action']}")
 
 
 bot.remove_command("help")
