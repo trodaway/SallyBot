@@ -90,17 +90,17 @@ async def status():
     while True:
         with open("data/activities.json", "r") as activities_file:
             activities = json.load(activities_file)
-            single_activity = activities[str(random.choice(range(len(activities))))]
-            if single_activity["type"] == "watching":
-                activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.watching)
-            elif single_activity["type"] == "listening":
-                activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.listening)
-            elif single_activity["type"] == "playing":
-                activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.playing)
-            else:
-                activity = discord.Activity(name="The Sea", type=discord.ActivityType.watching)
-            await bot.change_presence(activity=activity)
-            # print(f"*****\nStatus Changed\nType: {single_activity['type']}\nName: {single_activity['name']}")
+        single_activity = activities[str(random.choice(range(len(activities))))]
+        if single_activity["type"] == "watching":
+            activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.watching)
+        elif single_activity["type"] == "listening":
+            activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.listening)
+        elif single_activity["type"] == "playing":
+            activity = discord.Activity(name=single_activity["name"], type=discord.ActivityType.playing)
+        else:
+            activity = discord.Activity(name="The Sea", type=discord.ActivityType.watching)
+        await bot.change_presence(activity=activity)
+        # print(f"*****\nStatus Changed\nType: {single_activity['type']}\nName: {single_activity['name']}")
         await asyncio.sleep(10)
 
 
@@ -212,8 +212,8 @@ async def _credits(ctx):
     try:
         with open("data/contributors.txt", "r") as contributors_file:
             contributors = "\n".join(contributors_file.readline().replace(", ", ",").split(","))
-            await ctx.send(f"I'm SallyBot, a mascot from Geordie land, and I belong to NUSSAGG. I have the following "
-                           f"people to thank for my creation:\n>>> {contributors}")
+        await ctx.send(f"I'm SallyBot, a mascot from Geordie land, and I belong to NUSSAGG. I have the following people"
+                       f" to thank for my creation:\n>>> {contributors}")
     except FileNotFoundError:
         await ctx.send("I'm SallyBot, a mascot from Geordie land, and I belong to NUSSAGG. Unfortunately my memory's "
                        "currently a little fuzzy as to who made me.")
@@ -225,8 +225,8 @@ async def fact(ctx):
     try:
         with open("data/facts.json", "r") as fact_file:
             facts = json.load(fact_file)
-            single_fact = facts[str(random.choice(range(len(facts))))]
-            await ctx.send(single_fact)
+        single_fact = facts[str(random.choice(range(len(facts))))]
+        await ctx.send(single_fact)
     except FileNotFoundError:
         await ctx.send("I don't seem to know any facts at the minute :tired_face:. Please try again later!")
 
@@ -237,8 +237,8 @@ async def joke(ctx):
     try:
         with open("data/jokes.json", "r") as joke_file:
             jokes = json.load(joke_file)
-            single_joke = jokes[str(random.choice(range(len(jokes))))]
-            await ctx.send(single_joke)
+        single_joke = jokes[str(random.choice(range(len(jokes))))]
+        await ctx.send(single_joke)
     except FileNotFoundError:
         await ctx.send("I don't seem to know any jokes at the minute :tired_face:. Please try again later!")
 
@@ -250,9 +250,9 @@ async def friend(ctx):
         friend_list = []
         with open("data/friends.txt", "r") as friends_file:
             line = friends_file.readline()
-            multiple_friends = line.split(",")
-            for single_friend in multiple_friends:
-                friend_list.append(single_friend)
+        multiple_friends = line.split(",")
+        for single_friend in multiple_friends:
+            friend_list.append(single_friend)
         print(friend_list)
         if str(ctx.author.id) in friend_list:
             await ctx.send(f"{ctx.author.mention} you're already my friend!")
@@ -271,10 +271,10 @@ async def friends(ctx):
         friend_list = []
         with open("data/friends.txt", "r") as friends_file:
             line = friends_file.readline()
-            multiple_friends = line.split(",")
-            for single_friend in multiple_friends:
-                if single_friend != '':
-                    friend_list.append(single_friend)
+        multiple_friends = line.split(",")
+        for single_friend in multiple_friends:
+            if single_friend != '':
+                friend_list.append(single_friend)
         print(friend_list)
         if len(friend_list) == 0:
             await ctx.send(f"Unfortunately I don't have any friends at the moment. {ctx.author.mention}, perhaps you "
@@ -303,10 +303,10 @@ async def steal(ctx):
         friend_list = []
         with open("data/friends.txt", "r") as friends_file:
             line = friends_file.readline()
-            multiple_friends = line.split(",")
-            for single_friend in multiple_friends:
-                if single_friend != '':
-                    friend_list.append(single_friend)
+        multiple_friends = line.split(",")
+        for single_friend in multiple_friends:
+            if single_friend != '':
+                friend_list.append(single_friend)
         # if a NUSSAGG member tries to steal
         if 692795798416523356 in [role.id for role in ctx.author.roles]:
             await ctx.send(f"{ctx.author.mention} you can't steal me, you're part of my club")
@@ -396,13 +396,13 @@ async def geordie(ctx):
     try:
         with open("data/geordie.json", "r") as geordie_file:
             geordies = json.load(geordie_file)
-            single_geordie = geordies[str(random.choice(range(len(geordies))))]
-            embed = discord.Embed(title=single_geordie["name"], url=single_geordie["wiki"],
-                                  description=single_geordie["honours"], color=0x4fafe4)
-            embed.set_thumbnail(url=single_geordie["image"])
-            embed.add_field(name="Connection to Newcastle", value=single_geordie["connection"], inline=False)
-            embed.add_field(name="Famous for?", value=single_geordie["fame"], inline=False)
-            await ctx.send(embed=embed)
+        single_geordie = geordies[str(random.choice(range(len(geordies))))]
+        embed = discord.Embed(title=single_geordie["name"], url=single_geordie["wiki"],
+                              description=single_geordie["honours"], color=0x4fafe4)
+        embed.set_thumbnail(url=single_geordie["image"])
+        embed.add_field(name="Connection to Newcastle", value=single_geordie["connection"], inline=False)
+        embed.add_field(name="Famous for?", value=single_geordie["fame"], inline=False)
+        await ctx.send(embed=embed)
     except FileNotFoundError:
         await ctx.send("Ah divvint seem tuh knar any famous geordies at the minute :tired_face:. please try agyen "
                        "lator!\nOr, in plain English:\n>>> I don't seem to know any famous Geordies at the minute "

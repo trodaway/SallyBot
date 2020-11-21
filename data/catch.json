@@ -1,20 +1,30 @@
 {
   "0": {
+    "name": "Youlbury???",
     "id": "690594174365335568",
     "action": "y;catch"
   },
   "1": {
+    "name": "RoBot",
     "id": "689981551534014576",
     "action": "rob catch"
   },
   "2": {
+    "name": "Morrissey (Yellow Rally)",
     "id": "690576065743159308"
   },
   "3": {
+    "name": "Freddo (Green Rally)",
     "id": "690934924756385804"
   },
   "4": {
+    "name": "James the Sheep",
     "id": "690154676938866719",
     "action": "<@690154676938866719> catch"
+  },
+  "5": {
+    "name": "Bjorn the Bear",
+    "id": "779337294581727292",
+    "action": "<@779337294581727292> catch"
   }
 }
