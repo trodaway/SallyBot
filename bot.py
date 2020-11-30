@@ -493,21 +493,22 @@ async def on_message(message):
 
     # print("*"*10, message.channel.id)
 
-    if message.channel.id in [769722089883172905, 770426394894139413]:  # limits to certain people (Tim & Jack)
-        # print(f"*****\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: {message.author.id}")
-        # print(message.attachments)
-        if message.author == bot.user:
-            return
-        if len(message.attachments) > 0 and message.content == "Meme":
-            for attachment in message.attachments:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(attachment.url) as resp:
-                        if resp.status != 200:
-                            return await message.channel.send("Could not download file...")
-                        data = io.BytesIO(await resp.read())
-                        channel = bot.get_channel(689401725005725709)  # SSAGO meme server
-                        print(f"{now}: Sending Meme")
-                        await channel.send(file=discord.File(data, os.path.basename(attachment.url)))
+    if ctx.channel.type == discord.ChannelType.private:  # checks if message is a DM / Private Message
+        guild = bot.get_guild(689381329535762446)  # gets SSAGO server
+        role = guild.get_role(692795798416523356)  # gets NUSSAGG role
+        if role in guild.get_member(ctx.author.id).roles:  # only allows NUSSAGG members / role holders past
+            if message.author == bot.user:  # prevent a bot from triggering it, including self-triggering
+                return
+            elif len(message.attachments) > 0 and message.content == "Meme":
+                for attachment in message.attachments:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(attachment.url) as resp:
+                            if resp.status != 200:
+                                return await message.channel.send("Could not download file...")
+                            data = io.BytesIO(await resp.read())
+                            channel = bot.get_channel(689401725005725709)  # SSAGO meme server
+                            print(f"{now}: Sending Meme from {ctx.author.name}")
+                            await channel.send(file=discord.File(data, os.path.basename(attachment.url)))
         return
 
     channel = message.channel
