@@ -26,5 +26,10 @@
     "name": "Bjorn the Bear",
     "id": "779337294581727292",
     "action": "<@779337294581727292> catch"
+  },
+  "6": {
+    "name": "BorisBanana",
+    "id": "786014558182965278",
+    "action": "Boris catch"
   }
 }

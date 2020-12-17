@@ -497,7 +497,7 @@ async def on_message(message):
         guild = bot.get_guild(689381329535762446)  # gets SSAGO server
         role = guild.get_role(692795798416523356)  # gets NUSSAGG role
         if role in guild.get_member(ctx.author.id).roles:  # only allows NUSSAGG members / role holders past
-            if message.author == bot.user:  # prevent a bot from triggering it, including self-triggering
+            if message.author.bot:  # prevent a bot from triggering it, including self-triggering
                 return
             elif len(message.attachments) > 0 and message.content == "Meme":
                 for attachment in message.attachments:
