@@ -517,6 +517,12 @@ async def on_message(message):
     # print(f"*****\nTimestamp: {now}\nContent: {message.content}\nAuthor: {message.author}\nAuthor ID: "
     #       f"{message.author.id}\nChannel: {channel.name}")
 
+    # Added a NUSSAGG react and Meme Spork react to any memes a NUSSAGG member posts
+    if (message.channel.id == 689401725005725709) and \
+            (message.guild.get_role(699975448263786558) in message.author.roles) and (len(message.attachments) > 0):
+        await message.add_reaction("<NUSSAGG:689608898239397888>")
+        await message.add_reaction("<memespork:770733860308516924>")
+
     # stops it replying to itself
     if message.author == bot.user:
         # print(f"{now}: Trigger: It's me!")
