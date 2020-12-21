@@ -2,3 +2,4 @@
 .vscode
 api/config/db_config.php
 /venv/
+.insta_session

@@ -372,7 +372,7 @@ async def instagram(ctx):
     with ctx.channel.typing():
         # displays the latest instagram photo on Sally and Leo's profile
         insta = instaloader.Instaloader()
-        insta.login("nussaggsallyandleo", INSTAGRAM_PASSWORD)
+        # insta.login("nussaggsallyandleo", INSTAGRAM_PASSWORD)  # curently using session file due to bug
         profile = instaloader.Profile.from_username(insta.context, "nussaggsallyandleo")
         posts = profile.get_posts()
         post = next(posts)
@@ -721,6 +721,7 @@ async def on_command_error(ctx, error):
 @bot.event
 async def on_ready():
     print("I'm connected and ready to go!")
+    await bot.get_user(689579955012632586).send("I'm up and running again!")
     bot.loop.create_task(status())  # sets custom statuses for the bot
     bot.loop.create_task(spotify())
     bot.loop.create_task(catch_auto())
