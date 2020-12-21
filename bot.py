@@ -372,6 +372,7 @@ async def instagram(ctx):
     with ctx.channel.typing():
         # displays the latest instagram photo on Sally and Leo's profile
         insta = instaloader.Instaloader()
+        insta.load_session_from_file("nussaggsallyandleo", ".insta_session")
         # insta.login("nussaggsallyandleo", INSTAGRAM_PASSWORD)  # curently using session file due to bug
         profile = instaloader.Profile.from_username(insta.context, "nussaggsallyandleo")
         posts = profile.get_posts()
