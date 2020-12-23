@@ -728,7 +728,7 @@ async def on_command_error(ctx, error):
 @bot.event
 async def on_ready():
     print("I'm connected and ready to go!")
-    await bot.get_user(689579955012632586).send("I'm up and running again!")
+    await bot.get_user(689579955012632586).send("I'm up and running again! :wave:")
     bot.loop.create_task(status())  # sets custom statuses for the bot
     bot.loop.create_task(spotify())
     bot.loop.create_task(catch_auto())
