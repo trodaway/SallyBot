@@ -549,7 +549,7 @@ async def on_message(message):
                     with channel.typing():
                         print("Response: scream")
                         await channel.send(gif_response("scream"))
-                        await channel.send("Powered by GIPHY")
+                        await channel.send(file=discord.File("GIPHY.gif"))
                 else:
                     print("Response: shush")
                     await channel.send(":shushing_face:")
