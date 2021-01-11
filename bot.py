@@ -176,6 +176,28 @@ async def catch_auto():
         await asyncio.sleep(delay)
 
 
+async def avatar_auto():
+    while True:
+        try:
+            now = datetime.datetime.now()
+            if now.hour < 3:
+                if not bot.user.avatar == "634c8e3fbdd6e6e831707a9b6767b00b":
+                    with open("imgs/Sally_BadDrawing_UpsideDown.png", "rb") as pic:
+                        await bot.user.edit(avatar=pic.read())
+            elif now.hour >= 21:
+                if not bot.user.avatar == "d97a7a9876d39a2761acd5b23213ca3f":
+                    with open("imgs/Sally_BadDrawing.png", "rb") as pic:
+                        await bot.user.edit(avatar=pic.read())
+            else:
+                if not bot.user.avatar == "47975935969cab20fd8e91d27be1b3ea":
+                    with open("imgs/Sally_Normal.png", "rb") as pic:
+                        await bot.user.edit(avatar=pic.read())
+            await asyncio.sleep(60)
+        except discord.errors.HTTPException:
+            await asyncio.sleep(60)
+            pass
+
+
 @bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
              aliases=["hello", "hey"])
 async def hi(ctx):
@@ -549,7 +571,7 @@ async def on_message(message):
                     with channel.typing():
                         print("Response: scream")
                         await channel.send(gif_response("scream"))
-                        await channel.send(file=discord.File("GIPHY.gif"))
+                        await channel.send(file=discord.File("imgs/GIPHY.gif"))
                 else:
                     print("Response: shush")
                     await channel.send(":shushing_face:")
@@ -733,6 +755,7 @@ async def on_ready():
     bot.loop.create_task(status())  # sets custom statuses for the bot
     bot.loop.create_task(spotify())
     bot.loop.create_task(catch_auto())
+    bot.loop.create_task(avatar_auto())
 
 
 bot.run(TOKEN)
