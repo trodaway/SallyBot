@@ -143,7 +143,9 @@ async def spotify():
 
 
 async def catch_auto():
+    await bot.get_user(689579955012632586).send("[INFO] catch_auto() triggered (pre while True)")
     while True:
+        await bot.get_user(689579955012632586).send("[INFO] catch_auto at top of while True loop")
         # trigger once per day, at a random time
         time_of_day = random.random() * 86400
         now = datetime.datetime.now().timestamp() % 86400
@@ -151,9 +153,12 @@ async def catch_auto():
         if delay < 0:
             delay += 86400
 
+        await bot.get_user(689579955012632586).send(f"[INFO] catch_auto is delaying for {delay} seconds - next play is "
+                                                    f"at {str(datetime.timedelta(seconds=time_of_day))}")
         print(f"Next random catch will be activated at {str(datetime.timedelta(seconds=time_of_day))}")
-
+        await bot.get_user(689579955012632586).send("[INFO] catch_auto going to sleep")
         await asyncio.sleep(delay)
+        await bot.get_user(689579955012632586).send("[INFO] catch_auto is awake")
 
         guild = [guild for guild in bot.guilds if guild.id == 689381329535762446][0]
         channel = [channel for channel in guild.channels if channel.id == 690198193623007262][0]
@@ -174,7 +179,10 @@ async def catch_auto():
         # sleeps until midnight
         now = datetime.datetime.now().timestamp() % 86400
         delay = 86400 - now
+        await bot.get_user(689579955012632586).send(f"[INFO] catch_auto played, time to sleep until midnight for "
+                                                    f"{delay} seconds")
         await asyncio.sleep(delay)
+        await bot.get_user(689579955012632586).send("[INFO] catch_auto is at end of the loop")
 
 
 async def avatar_auto():
@@ -759,62 +767,5 @@ async def on_ready():
     bot.loop.create_task(catch_auto())
     bot.loop.create_task(avatar_auto())
 
-    # channel = bot.get_channel(692806076470394898)  # NUSSAGG
-    channel = bot.get_user(689579955012632586)  # Tim
-    # await channel.send("Term 2 Programme :point_down::point_down::point_down:", file=discord.File("Programme-Term2.png"))
-    # embed = discord.Embed(title="NUSSAGG Weekly Email - w/c 18th January 2021",
-    #                       description="Hi NUSSAGGers,\nWe hope everyone's deadlines and/or exams are going well! "
-    #                                   "Apologies for this not going out via email last week - SSAGO had some technical "
-    #                                   "issues.")
-    # embed.add_field(name="Games #2!",
-    #                 inline=False,
-    #                 value="Since the majority of you are likely to still be busy with deadlines and exams for the "
-    #                       "next week or so, we're running another chilled out games night to give you a space to "
-    #                       "relax and unwind. Like last week, think Skribbl, CAH, GeoGuessr, Werewolf, etc! Feel free to"
-    #                       " join us on Thursday at 7pm, over on [Zoom](https://ssago.org/meet/nussagg), and vote for "
-    #                       "your favourite online games in the "
-    #                       "[Facebook Event](https://www.facebook.com/events/1472221763169695/) too (and hit 'going' "
-    #                       "when you're there).")
-    # embed.add_field(name="The Duke of Edinburgh's Award",
-    #                 inline=False,
-    #                 value="As you may recall from late last year, Northumberland Scouts are linking up with the DofE's "
-    #                       "Resilience Fund, and therefore offering free DofE entry/registration for anyone eligible to "
-    #                       "register for their first or next level of the award!\nThere's also some free online "
-    #                       "training for any adults interested in becoming qualified as an expedition assessor.\nFor "
-    #                       "more information, head over to the [Northumberland Scouts website]"
-    #                       "(http://www.northumberlandscouts.org.uk/page/information-for-participants). There's a sign "
-    #                       "up form on there too, but if you have any questions, please don't hesitate to get in touch!"
-    #                       " For the couple of you that have previously been in contact with us about this, we have now"
-    #                       " contacted the appropriate people in the county regarding your queries.")
-    # embed.add_field(name="Green Rally Yellow Rally",
-    #                 inline=False,
-    #                 value="Bookings are still open for SSAGO's upcoming national rally, Green Rally Yellow Rally "
-    #                       "(GRYR), that will see two teams compete against one another to earn points from the "
-    #                       "activities you participate in. It runs 5th to 7th March and is **free to attend** - you only"
-    #                       " pay for any merch that you want to purchase (like very cool SSAGO mascot teatowels!). Head "
-    #                       "over to [rally.ssago.org](http://rally.ssago.org/) to book on now!\nWe'd normally be "
-    #                       "participating in the [iScout Game](https://iscoutgame.com/) that weekend, however the rally "
-    #                       "team have integrated it into the event for us. Becuase of this, there won't be a Team "
-    #                       "NUSSAGG, as isntead we'll be competing as either Team Green or Team Yellow! So, if you're "
-    #                       "interested in partaking, please make sure you book onto rally and tell them that you want to"
-    #                       " be involved in iScout too during the sign-up process.")
-    # embed.add_field(name="SSAGO Pub Challenge",
-    #                 inline=False,
-    #                 value="For part of our programme later this term, we will be completing the "
-    #                       "[SSAGO Pub Challenge](https://virtual.ssago.org/badge/67). SSAGO's Badges at Home team are "
-    #                       "current organising a mass badge order, including ones for this challenge, however the "
-    #                       "ordering deadline closes before we'll have completed it. Therefore, if you're interested in "
-    #                       "having the badge, we'd recommend that you go ahead and order it from the "
-    #                       "[SSAGO Badge Order](https://badge-order.ssago.org/).")
-    # embed.add_field(name="Programme",
-    #                 inline=False,
-    #                 value="The full programme for this term has been released in various places, such as [Facebook]"
-    #                       "(https://www.facebook.com/nussagg/photos/gm.2563951070308323/709005006441750/) & [Discord]"
-    #                       "(https://discord.com/channels/689381329535762446/692806076470394898/799036972030099456), so "
-    #                       "don't forget to check out what we have planned!")
-    # embed.set_footer(text="As always, if you have any questions, please don't hesitate to give any of the committee a "
-    #                       "shout!")
-    # embed.set_author(name="Your NUSSAGG Committee", icon_url="https://nussagg.ssago.org/img/clubs/logos/44.png")
-    # await channel.send(embed=embed)
 
 bot.run(TOKEN)
