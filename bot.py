@@ -32,6 +32,7 @@ GIPHY_TOKEN = os.getenv("GIPHY_TOKEN")
 INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 silence = False
+on_ready_flag = False
 
 
 # Sets how often the translator occurs, defaulting to 10
@@ -762,10 +763,13 @@ async def on_command_error(ctx, error):
 async def on_ready():
     print("I'm connected and ready to go!")
     await bot.get_user(689579955012632586).send("I'm up and running again! :wave:")
-    bot.loop.create_task(status())  # sets custom statuses for the bot
-    bot.loop.create_task(spotify())
-    bot.loop.create_task(catch_auto())
-    bot.loop.create_task(avatar_auto())
+    global on_ready_flag
+    if not on_ready_flag:
+        bot.loop.create_task(status())  # sets custom statuses for the bot
+        bot.loop.create_task(spotify())
+        bot.loop.create_task(catch_auto())
+        bot.loop.create_task(avatar_auto())
+        on_ready_flag = True
 
 
 bot.run(TOKEN)
