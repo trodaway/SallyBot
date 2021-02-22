@@ -506,7 +506,9 @@ async def mute(ctx):
 @bot.event
 async def on_message(message):
 
-    if message.guild and message.guild.get_role(692795753168634006) in message.author.roles:
+    # reacts for the shrimp attack by Liam
+    if message.guild and message.author.id == 150339580359475200 and \
+            message.guild.get_role(692795753168634006) in message.author.roles:
         await message.add_reaction("🐬")
         await message.add_reaction("🪓")
 
