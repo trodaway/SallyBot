@@ -208,6 +208,14 @@ async def avatar_auto():
             pass
 
 
+async def old_joe_trigger():
+    while True:
+        channel = bot.get_channel(690198193623007262)
+        await channel.send("||This is to make sure Old Joe is triggered this hour. If you're reading this, my "
+                           "auto-delete functionality broke :cry:||", delete_after=0.01)
+        await asyncio.sleep(3600)
+
+
 @bot.command(name="hi", brief="I'll say hi", help="Say hi to me and I'll say hi back",
              aliases=["hello", "hey"])
 async def hi(ctx):
@@ -775,6 +783,7 @@ async def on_ready():
         bot.loop.create_task(spotify())
         bot.loop.create_task(catch_auto())
         bot.loop.create_task(avatar_auto())
+        bot.loop.create_task(old_joe_trigger())
         on_ready_flag = True
 
 
