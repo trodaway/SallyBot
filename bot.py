@@ -612,7 +612,8 @@ async def on_message(message):
             # print(f"Translator frequency: {translator_frequency}\tType: {type(translator_frequency)}")
             if random.randrange(int(translator_frequency)) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None and \
-                    not (message.channel.category_id == 801588501841051689):
+                    message.channel.category_id not in [801588501841051689] and \
+                    message.channel.id not in [814598516311064616]:
                 print(f"{now}: Translating...")
                 translated_text = translator(message.content)
                 if translated_text is not None and not (translated_text.lower() == message.content.lower() or
