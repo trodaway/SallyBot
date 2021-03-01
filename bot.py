@@ -613,7 +613,9 @@ async def on_message(message):
             if random.randrange(int(translator_frequency)) == 0 and \
                     re.match("^<@[&!]?693216082567233667>.*$", message.content) is None and \
                     message.channel.category_id not in [801588501841051689] and \
-                    message.channel.id not in [814598516311064616]:
+                    message.channel.id not in [814598516311064616] and \
+                    re.match("^(A true scouser would have said|Did you know you could say it in welsh like this):",
+                             message.content) is not None:
                 print(f"{now}: Translating...")
                 translated_text = translator(message.content)
                 if translated_text is not None and not (translated_text.lower() == message.content.lower() or
@@ -740,7 +742,8 @@ async def on_message(message):
                        f"I can do.")
 
     # If being tagged in a catch, don't respond
-    elif re.match(r"(?i)^<@[&!]?693216082567233667>, (Freddo|Morrissey's) catches the ball", message.content) \
+    elif re.match(r"(?i)^<@[&!]?693216082567233667>, ((Freddo|Morrissey's) catches the ball|I don't have a spare hand "
+                  r"to catch with)", message.content) \
             is not None:
         print(f"{now}: Tagged in a false positive catch")
         return
