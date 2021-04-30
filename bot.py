@@ -315,7 +315,7 @@ async def friends(ctx):
             friend_list_names = []
             for i in friend_list:
                 if i != '':
-                    name = bot.get_user(int(i)).name
+                    name = bot.get_user(int(i)).display_name
                     friend_list_names.append(name)
             await ctx.send(f"My friends are:\n>>> {chr(10).join([i for i in friend_list_names])}")
     except FileNotFoundError:
