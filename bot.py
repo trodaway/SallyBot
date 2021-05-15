@@ -564,6 +564,12 @@ async def on_message(message):
         await message.add_reaction("<NUSSAGG:689608898239397888>")
         await message.add_reaction("<memespork:770733860308516924>")
 
+    # Adds a NUSSAGG react to any NUSSAGG member trying to steal a mascot
+    if message.channel.id == 690198193623007262 and len(message.mentions) == 1 and \
+            message.guild.get_role(699975448263786558) in message.mentions[0].roles and \
+            "needs to collect reactions from" in message.content:
+        await message.add_reaction("<NUSSAGG:689608898239397888>")
+
     # stops it replying to itself
     if message.author == bot.user:
         # print(f"{now}: Trigger: It's me!")
