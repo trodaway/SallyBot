@@ -31,5 +31,10 @@
     "name": "BorisBanana",
     "id": "786014558182965278",
     "action": "Boris catch"
+  },
+  "7": {
+    "name": "JAG (Just A Goose)",
+    "id": "714794607711354920",
+    "action": "<@714794607711354920> catch"
   }
 }
