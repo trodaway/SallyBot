@@ -169,7 +169,7 @@ async def catch_auto():
         catcher = catchers[str(random.choice(range(len(catchers))))]
         timeout = time.time() + 10
         while time.time() < timeout:
-            if int(catcher["id"]) in [member.id for member in guild.members if member.status == discord.Status.online]:
+            if int(catcher["id"]) in [member.id for member in guild.members if member.status == discord.Status.online] and not int(catcher["id"]) == 689981551534014576:
                 break
             catcher = catchers[str(random.choice(range(len(catchers))))]
         await channel.send(f"It's time for our daily game of catch! Since I don't have any arms I'm going to start by "
@@ -455,7 +455,7 @@ async def catch(ctx):
     catcher = catchers[str(random.choice(range(len(catchers))))]
     timeout = time.time() + 10
     while time.time() < timeout:
-        if int(catcher["id"]) in [member.id for member in ctx.guild.members if member.status == discord.Status.online]:
+        if int(catcher["id"]) in [member.id for member in ctx.guild.members if member.status == discord.Status.online] and not int(catcher["id"]) == 689981551534014576:
             break
         catcher = catchers[str(random.choice(range(len(catchers))))]
     await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
