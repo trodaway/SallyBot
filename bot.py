@@ -112,7 +112,7 @@ async def spotify():
         artists = json.load(artists_file)
     # which channel to send to, per guild
     # guild_channel = {689752642708308029: 689752642708308154}  # Test Server
-    guild_channel = {689381329535762446: 843456025507659797}  # SSAGO Server
+    guild_channel = {689381329535762446: 689800019875987467}  # SSAGO Server
     while True:
         try:
             with open("temp/activities.json", "r") as temp_activities:
@@ -162,7 +162,7 @@ async def catch_auto():
         await bot.get_user(689579955012632586).send("[INFO] catch_auto is awake")
 
         guild = [guild for guild in bot.guilds if guild.id == 689381329535762446][0]
-        channel = [channel for channel in guild.channels if channel.id == 843456025507659797][0]
+        channel = [channel for channel in guild.channels if channel.id == 689800019875987467][0]
 
         with open("data/catch.json", "r") as catch_file:
             catchers = json.load(catch_file)
