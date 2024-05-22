@@ -447,21 +447,25 @@ async def geordie(ctx):
 
 @bot.command(name="catch")
 async def catch(ctx):
-    with open("data/catch.json", "r") as catch_file:
-        catchers = json.load(catch_file)
-    if ctx.author.bot:
-        print("Bot = True")
-        await asyncio.sleep(random.randrange(2, 7))
-    catcher = catchers[str(random.choice(range(len(catchers))))]
-    timeout = time.time() + 10
-    while time.time() < timeout:
-        if int(catcher["id"]) in [member.id for member in ctx.guild.members if member.status == discord.Status.online] and not int(catcher["id"]) == 689981551534014576:
-            break
+    if random.randint(100) < 20:  # drops the ball occasionally
+        water = random.choice(["River Tyne", "North Sea", "Ouse Burn", "Leazes Park Lake", "Exhibition Park Boating Lake", "Kielder Water"])
+        await ctx.send(f"Whoops, I missed the ball and it snank to the bottom of the {water}")
+    else:
+        with open("data/catch.json", "r") as catch_file:
+            catchers = json.load(catch_file)
+        if ctx.author.bot:
+            print("Bot = True")
+            await asyncio.sleep(random.randrange(2, 7))
         catcher = catchers[str(random.choice(range(len(catchers))))]
-    await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
-                   f" headbutt it over to <@{catcher['id']}> ...")
-    if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
-        await ctx.send(f"{catcher['action']}")
+        timeout = time.time() + 10
+        while time.time() < timeout:
+            if int(catcher["id"]) in [member.id for member in ctx.guild.members if member.status == discord.Status.online] and not int(catcher["id"]) == 689981551534014576:
+                break
+            catcher = catchers[str(random.choice(range(len(catchers))))]
+        await ctx.send(f"{ctx.author.mention}, I'm a seahorse, I don't have arms to catch a ball. I was however able to"
+                       f" headbutt it over to <@{catcher['id']}> ...")
+        if catcher.get("action") is not None:  # checks if bot requires an additional action to be able to catch
+            await ctx.send(f"{catcher['action']}")
 
 
 bot.remove_command("help")
