@@ -147,16 +147,14 @@ async def catch_auto():
     await bot.get_user(689579955012632586).send("[INFO] catch_auto() triggered (pre while True)")
     while True:
         await bot.get_user(689579955012632586).send("[INFO] catch_auto at top of while True loop")
-        # trigger once per day, at a random time
-        time_of_day = random.random() * 86400
-        now = datetime.datetime.now().timestamp() % 86400
-        delay = time_of_day - now
-        if delay < 0:
-            delay += 86400
+        # trigger once per day, at a random time        
+        now = int(datetime.datetime.now().timestamp())
+        delay = random.randint(now % 86400, 86400)
+        catch_time = (now // 86400 * 86400) + delay
 
         await bot.get_user(689579955012632586).send(f"[INFO] catch_auto is delaying for {delay} seconds - next play is "
-                                                    f"at {str(datetime.timedelta(seconds=time_of_day))}")
-        print(f"Next random catch will be activated at {str(datetime.timedelta(seconds=time_of_day))}")
+                                                    f"at <t:{catch_time}:t> (<t:{catch_time}:R>)")
+        print(f"Next random catch will be activated at {datetime.datetime.fromtimestamp(catch_time).isoformat()}")
         await bot.get_user(689579955012632586).send("[INFO] catch_auto going to sleep")
         await asyncio.sleep(delay)
         await bot.get_user(689579955012632586).send("[INFO] catch_auto is awake")
@@ -178,7 +176,7 @@ async def catch_auto():
             await channel.send(f"{catcher['action']}")
 
         # sleeps until midnight
-        now = datetime.datetime.now().timestamp() % 86400
+        now = int(datetime.datetime.now().timestamp() % 86400)
         delay = 86400 - now
         await bot.get_user(689579955012632586).send(f"[INFO] catch_auto played, time to sleep until midnight for "
                                                     f"{delay} seconds")
