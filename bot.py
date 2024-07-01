@@ -447,7 +447,7 @@ async def geordie(ctx):
 async def catch(ctx):
     if random.randint(0, 100) < 20:  # drops the ball occasionally
         water = random.choice(["River Tyne", "North Sea", "Ouse Burn", "Leazes Park Lake", "Exhibition Park Boating Lake", "Kielder Water"])
-        await ctx.send(f"Whoops, I missed the ball and it snank to the bottom of the {water}")
+        await ctx.send(f"Whoops, I missed the ball and it sank to the bottom of the {water}")
     else:
         with open("data/catch.json", "r") as catch_file:
             catchers = json.load(catch_file)
